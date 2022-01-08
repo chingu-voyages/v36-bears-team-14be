@@ -1,2 +1,17 @@
-# v36-bears-team-14be
-Chingu Voyage 36 - Bears Team 14 Backend
+# Recipes App Back end
+
+## About
+
+
+## Installation
+
+
+## Development
+
+## Tech stack
+
+
+## Team members
+
+
+## Deployment

@@ -1,0 +1,17 @@
+{
+  "jshint.options": {
+    "esversion": 8
+  },
+  "editor.tabSize": 2,
+  "editor.insertSpaces": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll": true
+  },
+  "javascript.validate.enable": false,
+  "files.eol": "\n",
+  "cSpell.words": [
+    "Coursera",
+    "Pojo",
+    "Unfollow"
+  ]
+}
