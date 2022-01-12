@@ -1,6 +1,7 @@
 require("dotenv").config();
 import express from "express";
 import cors from "cors";
+import connectDB from "./database.config";
 const app = express();
 
 app.use(
@@ -18,5 +19,5 @@ const port = app.get("port");
 const server = app.listen(port, () =>
   console.log(`Server started on port ${port}`)
 );
-
+connectDB();
 export default server;
