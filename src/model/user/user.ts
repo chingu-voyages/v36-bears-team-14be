@@ -12,6 +12,9 @@ export interface IUser
             Date: Date
         }
     ]
+
+createdAt: Date;
+updatedAt: Date;
 }
 
 
