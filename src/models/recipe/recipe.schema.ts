@@ -1,7 +1,9 @@
 import { Schema, model } from "mongoose";
+import mongoose from "mongoose";
+import { IRecipeDocument, IRecipeModel } from "./recipe.types";
 
 //Recipe Schema
-const recipeSchema: Schema = new Schema({
+const RecipeSchema: Schema = new Schema({
   name: {
     type: String,
     required: true,
@@ -24,6 +26,5 @@ const recipeSchema: Schema = new Schema({
   },
 });
 
-const Recipe = model("Recipe", recipeSchema);
-
-module.exports = Recipe;
+export default RecipeSchema;
+// export const RecipeModel = model<IRecipeDocument, IRecipeModel>('recipes', RecipeSchema, 'recipes')
