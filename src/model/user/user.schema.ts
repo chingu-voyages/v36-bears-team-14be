@@ -8,7 +8,7 @@ const userSchema = new Schema<IUser>({
     email: {type: String, required: true},
     hashedPassword: {type: String, required: true},
     bio: {type: String, required: true},
-    recipes: [{ key: String, value: Date}]
+    recipes: { type: Schema.Types.Mixed, required: true, default: {} }
 });
 
 
