@@ -6,12 +6,7 @@ export interface IUser
     email: string;
     hashedPassword: string;
     bio: string;
-    recipes: [
-        {
-            recipeId: string, 
-            Date: Date
-        }
-    ]
+    recipes: { [keyof: string]: Date }
 
 createdAt: Date;
 updatedAt: Date;
