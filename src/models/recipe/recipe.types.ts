@@ -3,10 +3,7 @@ export interface IRecipe {
   _id: string;
   name: string;
   description: string;
-  likes: {
-    userId: string;
-    date: Date;
-  };
+  likes: { [keyof: string]: Date }
   postedBy: string;
   images: Array<{ url: string }>;
 }
