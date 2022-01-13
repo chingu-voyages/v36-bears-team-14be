@@ -6,6 +6,8 @@ export interface IRecipe {
   likes: { [keyof: string]: Date }
   postedBy: string;
   images: Array<{ url: string }>;
+createdAt: Date;
+updatedAt: Date
 }
 
 export interface IRecipeDocument extends IRecipe, Document {}
