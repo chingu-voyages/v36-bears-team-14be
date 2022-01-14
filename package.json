@@ -2,7 +2,6 @@
   "name": "recipes-api",
   "version": "1.0.0",
   "description": "Chingu Voyage 36 - Bears Team 14 Backend",
-
   "scripts": {
     "tsc": "tsc",
     "build": "npm run tsc",

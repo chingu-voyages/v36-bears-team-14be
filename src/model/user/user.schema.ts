@@ -1,5 +1,5 @@
 import { Schema, model } from "mongoose";
-import { IUser } from "./user";
+import { IUser } from "./user.types";
 
 const userSchema = new Schema<IUser>({
 
@@ -9,7 +9,8 @@ const userSchema = new Schema<IUser>({
     hashedPassword: {type: String, required: true},
     bio: {type: String, required: true},
     recipes: { type: Schema.Types.Mixed, required: true, default: {} }
-});
+},{ timestamps: { createdAt: 'created_at', updatedAt: 'created_at',  } },
+);
 
 
 export default userSchema;
