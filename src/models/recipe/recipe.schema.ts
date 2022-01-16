@@ -22,9 +22,11 @@ const RecipeSchema: Schema = new Schema(
       type: [{ url: String }],
     },
   },
-  {
+{
     timestamps: true,
-  }
+    strict: false,
+    typePojoToMixed: false,
+  } as SchemaOptionsWithPojoToMixed
 );
 
 export default RecipeSchema;
