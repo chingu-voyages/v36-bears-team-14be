@@ -13,11 +13,7 @@ const RecipeSchema: Schema = new Schema(
       type: String,
       required: true,
     },
-    likes: {
-      key: String,
-      ref: "user",
-      value: Date,
-    },
+    likes: { type: Schema.Types.Mixed, required: true, default: {} }
     postedBy: {
       type: String,
       ref: "user",
