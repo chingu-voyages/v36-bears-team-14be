@@ -8,6 +8,8 @@ export interface IRecipe {
   images: Array<{ url: string }>;
   createdAt: Date;
   updatedAt: Date;
+createdAt: Date;
+updatedAt: Date
 }
 
 export interface IRecipeDocument extends IRecipe, Document {}
