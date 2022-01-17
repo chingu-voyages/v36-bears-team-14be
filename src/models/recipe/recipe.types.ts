@@ -10,5 +10,5 @@ export interface IRecipe {
   updatedAt: Date;
 }
 
-export interface IRecipeDocument extends Document<IRecipe> {}
-export interface IRecipeModel extends Model<IRecipeModel> {}
+export interface IRecipeDocument extends IRecipe, Document {}
+export interface IRecipeModel extends Model<IRecipeDocument > {}
