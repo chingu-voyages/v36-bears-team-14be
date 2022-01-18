@@ -1,8 +1,10 @@
 require("dotenv").config();
+const bodyParser = require("body-parser");
 import express from "express";
 import cors from "cors";
 import connectDB from "./database.config";
 import authentication from "./routes/authentication";
+import passport from "passport";
 const app = express();
 
 app.use(
@@ -11,6 +13,10 @@ app.use(
     origin: true,
   })
 );
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(passport.initialize());
+//app.use(passport.session());
 app.set("port", process.env.PORT || 5000);
 app.get("/", (_req, res) => {
   res.send("API Running");

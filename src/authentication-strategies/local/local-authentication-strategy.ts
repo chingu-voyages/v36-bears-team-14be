@@ -30,7 +30,6 @@ async function authenticateUser(email: string, password: string, done: any) {
       ? done(undefined, user)
       : done({ error: "Invalid username or password" }, undefined);
   } catch (exception) {
-    console.log(exception);
     return done(exception, undefined);
   }
 }

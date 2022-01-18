@@ -1,6 +1,5 @@
 import * as express from "express";
 import { Request, Response } from "express";
-const router = express.Router();
 import passport from "passport";
 
 enum AuthenticationStrategy {
@@ -13,11 +12,10 @@ export const passportLocalAuthenticate = async (
 ): Promise<void> => {
   passport.authenticate(AuthenticationStrategy.Local, (err, user, info) => {
     if (err) {
-      res.status(401).send(err);
-      return next(err);
+      return res.status(401).send({ error: err.message });
     }
     if (!user) {
-      return res.status(401).send("Authentication: unable to find user");
+      return res.status(401).send({ error: err.message });
     }
     req.logIn(user, () => {
       res
