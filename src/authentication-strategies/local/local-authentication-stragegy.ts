@@ -4,7 +4,7 @@ const LocalStrategy = require("passport-local").Strategy;
 import { UserModel } from "../../models/user/user.schema";
 
 passport.serializeUser((user: any, done: any) => {
-  done(undefined, user.id);
+  done(undefined, user._id);
 });
 
 passport.deserializeUser((id: string, done: any) => {

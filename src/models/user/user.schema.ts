@@ -12,7 +12,7 @@ const userSchema = new Schema<IUser>(
     lastName: { type: String, required: true },
     email: { type: String, required: true },
     hashedPassword: { type: String, required: true },
-    bio: { type: String, required: true },
+    bio: { type: String, required: true, default: "" },
     recipes: { type: Schema.Types.Mixed, required: true, default: {} },
   },
   {
