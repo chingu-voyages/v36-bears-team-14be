@@ -14,3 +14,14 @@ export const loginAuthenticationValidator = (): any[] => {
     body("password").not().isEmpty(),
   ];
 };
+
+export const registerNewUserValidator = (): any[] => {
+  return [
+    body("email")
+      .isEmail()
+      .normalizeEmail({ all_lowercase: true, gmail_remove_dots: false }),
+    body("password").isLength({ min: 8 }).trim().escape(),
+    body("firstName").trim().escape(),
+    body("lastName").trim().escape(),
+  ];
+};

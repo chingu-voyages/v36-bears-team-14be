@@ -1,5 +1,8 @@
 import { UserModel } from "../../models/user/user.schema";
-import { IUserDocument } from "../../models/user/user.types";
+import {
+  IUserDocument,
+  IUserRegistrationDetails,
+} from "../../models/user/user.types";
 import { hashPassword } from "../../utils/crypto";
 
 export async function findOneByEmail({
@@ -17,12 +20,7 @@ export async function createUser({
   firstName,
   lastName,
   plainTextPassword,
-}: {
-  email: string;
-  firstName: string;
-  lastName: string;
-  plainTextPassword: string;
-}): Promise<IUserDocument> {
+}: IUserRegistrationDetails): Promise<IUserDocument> {
   const usersWithSameEmail = await UserModel.find({ "email": email });
   if (usersWithSameEmail && usersWithSameEmail.length > 0)
     throw new Error(`User with email id ${email} already exists`);

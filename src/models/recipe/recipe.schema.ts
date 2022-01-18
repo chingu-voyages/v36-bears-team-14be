@@ -32,4 +32,7 @@ const RecipeSchema: Schema = new Schema(
 );
 
 export default RecipeSchema;
-// export const RecipeModel = model<IRecipeDocument, IRecipeModel>('recipes', RecipeSchema, 'recipes')
+export const RecipeModel = model<IRecipeDocument, IRecipeModel>(
+  "recipe",
+  RecipeSchema
+);

@@ -1,4 +1,5 @@
 import { Document, Model } from "mongoose";
+import { RecipeModel } from "../recipe/recipe.schema";
 export interface IUser {
   firstName: string;
   lastName: string;
@@ -8,6 +9,13 @@ export interface IUser {
   recipes: { [keyof: string]: Date };
   createdAt: Date;
   updatedAt: Date;
+}
+
+export interface IUserRegistrationDetails {
+  email: string;
+  firstName: string;
+  lastName: string;
+  plainTextPassword: string;
 }
 
 export interface IUserDocument extends IUser, Document {}
@@ -25,3 +33,5 @@ export interface IUserModel extends Model<IUserDocument> {
     plainTextPassword: string;
   }) => Promise<IUserDocument>;
 }
+
+const newRecipe = await RecipeModel.create({});
