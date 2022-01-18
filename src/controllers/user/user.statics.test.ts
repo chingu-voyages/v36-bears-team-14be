@@ -13,9 +13,11 @@ const options: mongoose.ConnectOptions = {
 beforeEach(async () => {
   mongoServer = await MongoMemoryServer.create();
   const mongoUri = mongoServer.getUri();
-  await mongoose.connect(mongoUri, options, (err) => {
-    if (err) console.error(err);
-  });
+  try {
+    await mongoose.connect(mongoUri, options);
+  } catch (exception) {
+    console.warn("Mongo error", exception);
+  }
 });
 
 afterEach(async () => {

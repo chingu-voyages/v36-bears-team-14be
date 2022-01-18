@@ -1,8 +1,5 @@
-import { Model } from "mongoose";
-import mongoose from "mongoose";
-
+import { Document, Model } from "mongoose";
 export interface IUser {
-  _id: mongoose.Types.ObjectId;
   firstName: string;
   lastName: string;
   email: string;
