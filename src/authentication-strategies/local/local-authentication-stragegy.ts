@@ -1,7 +1,6 @@
 import passport from "passport";
 
 const LocalStrategy = require("passport-local").Strategy;
-import bcrypt from "bcryptjs";
 import { UserModel } from "../../models/user/user.schema";
 
 passport.serializeUser((user: any, done: any) => {
