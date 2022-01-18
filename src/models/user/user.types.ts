@@ -1,7 +1,8 @@
 import { Model } from "mongoose";
+import mongoose from "mongoose";
 
 export interface IUser {
-  _id: string;
+  _id: mongoose.Types.ObjectId;
   firstName: string;
   lastName: string;
   email: string;
@@ -13,4 +14,6 @@ export interface IUser {
 }
 
 export interface IUserDocument extends IUser, Document {}
-export interface IUserModel extends Model<IUserDocument> {}
+export interface IUserModel extends Model<IUserDocument> {
+  findOneByEmail: ({ email }: { email: string }) => Promise<IUserDocument>;
+}
