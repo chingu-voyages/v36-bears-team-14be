@@ -1,5 +1,8 @@
 import { Schema, model, SchemaOptions } from "mongoose";
-import { findOneByEmail } from "../../controllers/user/user.statics";
+import {
+  createUser,
+  findOneByEmail,
+} from "../../controllers/user/user.statics";
 import { IUser, IUserDocument, IUserModel } from "./user.types";
 
 interface SchemaOptionsWithPojoToMixed extends SchemaOptions {
@@ -12,8 +15,8 @@ const userSchema = new Schema<IUser>(
     lastName: { type: String, required: true },
     email: { type: String, required: true },
     hashedPassword: { type: String, required: true },
-    bio: { type: String, required: true, default: "" },
-    recipes: { type: Schema.Types.Mixed, required: true, default: {} },
+    bio: { type: String, required: false, default: "" },
+    recipes: { type: Schema.Types.Mixed, required: false, default: {} },
   },
   {
     timestamps: true,
@@ -23,5 +26,6 @@ const userSchema = new Schema<IUser>(
 );
 
 userSchema.statics.findOneByEmail = findOneByEmail;
+userSchema.statics.createUser = createUser;
 export default userSchema;
 export const UserModel = model<IUserDocument, IUserModel>("user", userSchema);

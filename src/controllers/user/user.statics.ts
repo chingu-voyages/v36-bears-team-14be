@@ -1,5 +1,6 @@
 import { UserModel } from "../../models/user/user.schema";
 import { IUserDocument } from "../../models/user/user.types";
+import { hashPassword } from "../../utils/crypto";
 
 export async function findOneByEmail({
   email,
@@ -25,10 +26,11 @@ export async function createUser({
   const usersWithSameEmail = await UserModel.find({ "email": email });
   if (usersWithSameEmail && usersWithSameEmail.length > 0)
     throw new Error(`User with email id ${email} already exists`);
+  const hashedPassword = await hashPassword({ password: plainTextPassword });
   return UserModel.create({
     email,
     firstName,
     lastName,
-    password: plainTextPassword,
+    hashedPassword,
   });
 }
