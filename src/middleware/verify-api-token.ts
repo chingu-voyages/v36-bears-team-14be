@@ -6,7 +6,7 @@ export function validateAPIToken(
   res: Response,
   next: NextFunction
 ) {
-  // bypass check if google auth route
+  // This is here in case we implement google authorization later
   if (req.path.match(/^\/auth|^\/success|^\/fail|^\/api\/auth\|/)) {
     next();
   } else {
@@ -14,8 +14,6 @@ export function validateAPIToken(
       throw new Error("DEV_API_TOKEN does not exist in environment variables");
     const authHeader = req.headers.authorization;
     const auth = authHeader && authHeader.split(" ")[1];
-
-    console.log("What is auth", auth, process.env.DEV_API_TOKEN);
     if (auth && auth === process.env.DEV_API_TOKEN) {
       next();
     } else {
