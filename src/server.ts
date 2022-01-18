@@ -5,14 +5,22 @@ import cors from "cors";
 import connectDB from "./database.config";
 import authentication from "./routes/authentication";
 import passport from "passport";
+import { validateAPIToken } from "./middleware/verify-api-token";
 const app = express();
 
+const isProduction = !(
+  process.env.NODE_ENV && process.env.NODE_ENV.match("development")
+);
+
+console.log("Production mode?", isProduction);
 app.use(
   cors({
     credentials: true,
     origin: true,
   })
 );
+isProduction && app.use(validateAPIToken);
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(passport.initialize());
