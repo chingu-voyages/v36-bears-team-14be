@@ -55,4 +55,20 @@ describe("user statics test", () => {
     });
     expect(checkPasswordResult).toBe(true);
   });
+  test("throws an error for duplicate users", async () => {
+    const fakeUser = {
+      firstName: "someFirstName",
+      lastName: "someLastName",
+      email: "specialuser@example.com",
+      plainTextPassword: "password$123",
+    };
+    const fakeUser2 = {
+      firstName: "anotherFakeUser",
+      lastName: "someOtherTypeOfLastName",
+      email: "specialuser@example.com",
+      plainTextPassword: "password$1237",
+    };
+    await UserModel.createUser(fakeUser);
+    await expect(() => UserModel.createUser(fakeUser2)).rejects.toThrow();
+  });
 });
