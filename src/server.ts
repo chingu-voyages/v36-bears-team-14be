@@ -6,33 +6,40 @@ import connectDB from "./database.config";
 import authentication from "./routes/authentication";
 import passport from "passport";
 import { validateAPIToken } from "./middleware/verify-api-token";
+import {
+  checkEnvironmentVariables,
+  IS_PRODUCTION,
+} from "./check-environment-variables";
 const cookieSession = require("cookie-session");
 const app = express();
 
-const isProduction = !(
-  process.env.NODE_ENV && process.env.NODE_ENV.match("development")
-);
-const DOMAIN = isProduction
+checkEnvironmentVariables();
+
+const DOMAIN = IS_PRODUCTION
   ? process.env.PRODUCTION_COOKIE_DOMAIN
   : process.env.DEV_COOKIE_DOMAIN;
 
-console.log("Production mode?", isProduction);
+console.log("Production mode?", IS_PRODUCTION);
 app.use(
   cors({
     credentials: true,
     origin: true,
   })
 );
-isProduction && app.use(validateAPIToken);
+IS_PRODUCTION && app.use(validateAPIToken);
 
+const cookieKeys = IS_PRODUCTION
+  ? [process.env.PRODUCTION_COOKIE1, process.env.PRODUCTION_COOKIE2]
+  : [process.env.DEV_COOKIE1, process.env.DEV_COOKIE2];
 const cookieOptions = {
   maxAge: 24 * 60 * 60 * 1000, // Day
   name: "recipe",
-  keys: [process.env.DEV_COOKIE1, process.env.DEV_COOKIE2],
+  keys: cookieKeys,
   domain: DOMAIN,
 };
+
 app.use(
-  isProduction
+  IS_PRODUCTION
     ? cookieSession({ ...cookieOptions, secure: true, sameSite: "none" })
     : cookieSession(cookieOptions)
 );
