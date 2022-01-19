@@ -1,4 +1,5 @@
 import { RecipeModel } from "../../models/recipe/recipe.schema";
+import { IRecipeDocument } from "../../models/recipe/recipe.types";
 
 export const createNewRecipe = async ({
   name,
@@ -8,11 +9,11 @@ export const createNewRecipe = async ({
   name: string;
   description: string;
   postedBy: string;
-}) => {
+}): Promise<IRecipeDocument> => {
   const recipe = {
     name,
     description,
     postedBy,
   };
-  const recipeDocument = await RecipeModel.create(recipe);
+  return RecipeModel.create(recipe);
 };

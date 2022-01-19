@@ -25,4 +25,14 @@ export type TRecipeStep = {
 };
 
 export interface IRecipeDocument extends IRecipe, Document {}
-export interface IRecipeModel extends Model<IRecipeDocument> {}
+export interface IRecipeModel extends Model<IRecipeDocument> {
+  createNewRecipe: ({
+    name,
+    description,
+    postedBy,
+  }: {
+    name: string;
+    description: string;
+    postedBy: string;
+  }) => Promise<IRecipeDocument>;
+}
