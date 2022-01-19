@@ -33,5 +33,3 @@ export interface IUserModel extends Model<IUserDocument> {
     plainTextPassword: string;
   }) => Promise<IUserDocument>;
 }
-
-const newRecipe = await RecipeModel.create({});

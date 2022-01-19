@@ -47,11 +47,9 @@ export const registerNewLocalUser = async (
       req.logIn(newUser, (err) => {
         if (err) {
           console.log(err);
-          return res
-            .status(500)
-            .send({
-              error: `Unable to register user due to server error ${err}`,
-            });
+          return res.status(500).send({
+            error: `Unable to register user due to server error ${err}`,
+          });
         }
         return res.status(200).send(newUser);
       });
@@ -59,4 +57,9 @@ export const registerNewLocalUser = async (
   } catch (exception) {
     next(res.status(400).send({ error: exception.message }));
   }
+};
+
+export const logOut = async (req: Request, res: Response) => {
+  req.logOut();
+  return res.status(200).send({ info: "Session ended successfully" });
 };
