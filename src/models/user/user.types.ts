@@ -1,7 +1,6 @@
-import { Model } from "mongoose";
-
+import { Document, Model } from "mongoose";
+import { RecipeModel } from "../recipe/recipe.schema";
 export interface IUser {
-  _id: string;
   firstName: string;
   lastName: string;
   email: string;
@@ -12,5 +11,25 @@ export interface IUser {
   updatedAt: Date;
 }
 
+export interface IUserRegistrationDetails {
+  email: string;
+  firstName: string;
+  lastName: string;
+  plainTextPassword: string;
+}
+
 export interface IUserDocument extends IUser, Document {}
-export interface IUserModel extends Model<IUserDocument> {}
+export interface IUserModel extends Model<IUserDocument> {
+  findOneByEmail: ({ email }: { email: string }) => Promise<IUserDocument>;
+  createUser: ({
+    email,
+    firstName,
+    lastName,
+    plainTextPassword,
+  }: {
+    email: string;
+    firstName: string;
+    lastName: string;
+    plainTextPassword: string;
+  }) => Promise<IUserDocument>;
+}

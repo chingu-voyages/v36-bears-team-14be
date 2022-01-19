@@ -1,7 +1,9 @@
-import { Schema, model } from "mongoose";
+import { Schema, model, SchemaOptions } from "mongoose";
 import mongoose from "mongoose";
 import { IRecipeDocument, IRecipeModel } from "./recipe.types";
-
+interface SchemaOptionsWithPojoToMixed extends SchemaOptions {
+  typePojoToMixed: boolean;
+}
 //Recipe Schema
 const RecipeSchema: Schema = new Schema(
   {
@@ -9,11 +11,11 @@ const RecipeSchema: Schema = new Schema(
       type: String,
       required: true,
     },
-    desription: {
+    description: {
       type: String,
       required: true,
     },
-    likes: { type: Schema.Types.Mixed, required: true, default: {} }
+    likes: { type: Schema.Types.Mixed, required: true, default: {} },
     postedBy: {
       type: String,
       ref: "user",
@@ -22,7 +24,7 @@ const RecipeSchema: Schema = new Schema(
       type: [{ url: String }],
     },
   },
-{
+  {
     timestamps: true,
     strict: false,
     typePojoToMixed: false,
@@ -30,4 +32,7 @@ const RecipeSchema: Schema = new Schema(
 );
 
 export default RecipeSchema;
-// export const RecipeModel = model<IRecipeDocument, IRecipeModel>('recipes', RecipeSchema, 'recipes')
+export const RecipeModel = model<IRecipeDocument, IRecipeModel>(
+  "recipe",
+  RecipeSchema
+);
