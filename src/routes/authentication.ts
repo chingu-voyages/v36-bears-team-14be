@@ -3,8 +3,8 @@ const router = express.Router();
 import passport from "passport";
 import LocalPassportStrategy from "../authentication-strategies/local/local-authentication-strategy";
 import { endExistingSession } from "../middleware/end-existing-session";
-import { protectedRoute } from "../middleware/protected-route";
-import { hasActiveSession } from "./controllers/authentication/authentication.get.controller";
+
+import { determineIfSessionIsActive } from "./controllers/authentication/authentication.get.controller";
 import {
   logOut,
   passportLocalAuthenticate,
@@ -33,6 +33,6 @@ router.post(
 router.post("/logout", logOut);
 
 // Helper route we may need to check if a session is active (without getting 401)
-router.get("/session", hasActiveSession);
+router.get("/session", determineIfSessionIsActive);
 
 export default router;
