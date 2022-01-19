@@ -14,7 +14,12 @@ export const loginAuthenticationValidator = (): any[] => {
     body("password").not().isEmpty(),
   ];
 };
-
+export const newRecipeValidator = (): any[] => {
+  return [
+    body("name").not().isEmpty().trim().escape(),
+    body("description").not().isEmpty().trim().escape(),
+  ];
+};
 export const registerNewUserValidator = (): any[] => {
   return [
     body("email")
