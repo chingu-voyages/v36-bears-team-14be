@@ -23,7 +23,22 @@ const RecipeSchema: Schema = new Schema(
     images: {
       type: [{ url: String }],
     },
-    ingredients: {},
+    ingredients: {
+      type: [{ name: String, quantity: Number, unit: String }],
+      required: false,
+      default: [],
+    },
+    directions: {
+      type: [
+        {
+          stepNumber: Number,
+          description: String,
+          imageUrl: { type: String, required: false },
+        },
+      ],
+      required: false,
+      default: [],
+    },
   },
   {
     timestamps: true,
