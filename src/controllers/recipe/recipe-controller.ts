@@ -4,6 +4,7 @@ import {
   TRecipeIngredient,
   TRecipeStep,
 } from "../../models/recipe/recipe.types";
+import { UserModel } from "../../models/user/user.schema";
 
 export const createNewRecipe = async ({
   name,
@@ -25,5 +26,10 @@ export const createNewRecipe = async ({
     ingredients,
     directions,
   };
-  return RecipeModel.create(recipe);
+  const newRecipe = await RecipeModel.create(recipe);
+  const user = await UserModel.findById(postedBy);
+  user.recipes[`${newRecipe._id}`] = new Date();
+  user.markModified("recipes");
+  await user.save();
+  return newRecipe;
 };
