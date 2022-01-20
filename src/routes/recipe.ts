@@ -10,12 +10,14 @@ router.post(
   newRecipeValidator,
   validate,
   async (req: any, res: any) => {
-    const { name, description } = req.body;
+    const { name, description, ingredients, directions } = req.body;
     try {
       const result = await RecipeModel.createNewRecipe({
         name,
         description,
         postedBy: req.user.id,
+        ingredients,
+        directions,
       });
       res.status(200).send(result);
     } catch (err) {

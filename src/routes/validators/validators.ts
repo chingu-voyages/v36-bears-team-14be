@@ -18,6 +18,8 @@ export const newRecipeValidator = (): any[] => {
   return [
     body("name").not().isEmpty().trim().escape(),
     body("description").not().isEmpty().trim().escape(),
+    body("ingredients").isArray(),
+    body("directions").isArray(),
   ];
 };
 export const registerNewUserValidator = (): any[] => {

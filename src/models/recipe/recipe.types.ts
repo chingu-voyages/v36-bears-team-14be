@@ -30,9 +30,13 @@ export interface IRecipeModel extends Model<IRecipeDocument> {
     name,
     description,
     postedBy,
+    ingredients,
+    directions,
   }: {
     name: string;
     description: string;
     postedBy: string;
+    ingredients: TRecipeIngredient[];
+    directions: TRecipeStep[];
   }) => Promise<IRecipeDocument>;
 }
