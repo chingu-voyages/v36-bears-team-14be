@@ -9,6 +9,8 @@ export interface IRecipe {
   updatedAt: Date;
   ingredients: Array<TRecipeIngredient>;
   directions: Array<TRecipeStep>;
+  cookTimeMinutes: number;
+  prepTimeMinutes: number;
 }
 
 export type TRecipeIngredient = {
@@ -18,7 +20,6 @@ export type TRecipeIngredient = {
 };
 
 export type TRecipeStep = {
-  stepNumber: number;
   description: string;
   imageUrl?: string;
 };

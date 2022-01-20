@@ -1,11 +1,11 @@
 import { Schema, model, SchemaOptions } from "mongoose";
 import mongoose from "mongoose";
-import { IRecipeDocument, IRecipeModel } from "./recipe.types";
+import { IRecipe, IRecipeDocument, IRecipeModel } from "./recipe.types";
 interface SchemaOptionsWithPojoToMixed extends SchemaOptions {
   typePojoToMixed: boolean;
 }
 //Recipe Schema
-const RecipeSchema: Schema = new Schema(
+const RecipeSchema = new Schema<IRecipe>(
   {
     name: {
       type: String,
@@ -25,7 +25,7 @@ const RecipeSchema: Schema = new Schema(
     },
     ingredients: {
       type: [{ name: String, quantity: Number, unit: String }],
-      required: false,
+      required: true,
       default: [],
     },
     directions: {
@@ -36,9 +36,11 @@ const RecipeSchema: Schema = new Schema(
           imageUrl: { type: String, required: false },
         },
       ],
-      required: false,
+      required: true,
       default: [],
     },
+    cookTimeMinutes: { type: Number, required: true, default: 0 },
+    prepTimeMinutes: { type: Number, required: true, default: 0 },
   },
   {
     timestamps: true,
