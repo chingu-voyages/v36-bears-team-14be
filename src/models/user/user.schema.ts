@@ -2,6 +2,8 @@ import { Schema, model, SchemaOptions } from "mongoose";
 import {
   createUser,
   findOneByEmail,
+  getAllUsersSecure,
+  getUserByIdSecure,
 } from "../../controllers/user/user.statics";
 import { IUser, IUserDocument, IUserModel } from "./user.types";
 
@@ -27,5 +29,7 @@ const userSchema = new Schema<IUser>(
 
 userSchema.statics.findOneByEmail = findOneByEmail;
 userSchema.statics.createUser = createUser;
+userSchema.statics.getUserByIdSecure = getUserByIdSecure;
+userSchema.statics.getAllUsersSecure = getAllUsersSecure;
 export default userSchema;
 export const UserModel = model<IUserDocument, IUserModel>("user", userSchema);
