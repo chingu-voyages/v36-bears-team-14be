@@ -1,5 +1,4 @@
 import { Document, Model } from "mongoose";
-import { RecipeModel } from "../recipe/recipe.schema";
 export interface IUser {
   firstName: string;
   lastName: string;
@@ -18,6 +17,17 @@ export interface IUserRegistrationDetails {
   plainTextPassword: string;
 }
 
+export type TSecureUser = Pick<
+  IUserDocument,
+  | "_id"
+  | "firstName"
+  | "lastName"
+  | "bio"
+  | "recipes"
+  | "createdAt"
+  | "updatedAt"
+>;
+
 export interface IUserDocument extends IUser, Document {}
 export interface IUserModel extends Model<IUserDocument> {
   findOneByEmail: ({ email }: { email: string }) => Promise<IUserDocument>;
@@ -32,4 +42,6 @@ export interface IUserModel extends Model<IUserDocument> {
     lastName: string;
     plainTextPassword: string;
   }) => Promise<IUserDocument>;
+  getUserByIdSecure: ({ id }: { id: string }) => Promise<TSecureUser>;
+  getAllUsersSecure: () => Promise<TSecureUser[]>;
 }

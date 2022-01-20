@@ -1,4 +1,4 @@
-import { body, validationResult } from "express-validator";
+import { body, param, validationResult } from "express-validator";
 
 export const validate = (req: any, res: any, next: any): any => {
   const errors = validationResult(req);
@@ -24,4 +24,8 @@ export const registerNewUserValidator = (): any[] => {
     body("firstName").trim().escape(),
     body("lastName").trim().escape(),
   ];
+};
+
+export const getParamIdValidator = (): any[] => {
+  return [param("id").not().isEmpty().trim().escape()];
 };
