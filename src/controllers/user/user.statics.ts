@@ -1,7 +1,9 @@
 import { UserModel } from "../../models/user/user.schema";
 import {
+  IUser,
   IUserDocument,
   IUserRegistrationDetails,
+  TSecureUser,
 } from "../../models/user/user.types";
 import { hashPassword } from "../../utils/crypto";
 
@@ -31,4 +33,37 @@ export async function createUser({
     lastName,
     hashedPassword,
   });
+}
+
+export async function getUserByIdSecure({
+  id,
+}: {
+  id: string;
+}): Promise<TSecureUser> {
+  const user = await UserModel.findById(id);
+  return adaptUserToSecure(user);
+}
+
+export async function getAllUsersSecure(): Promise<TSecureUser[]> {
+  const users = await UserModel.find();
+  return users.map((user) => {
+    return adaptUserToSecure(user);
+  });
+}
+
+/**
+ *
+ * @param user IUser
+ * @returns TSecure user - user without sensitive info like password and e-mail address
+ */
+export function adaptUserToSecure(user: IUserDocument): TSecureUser {
+  return {
+    _id: user.id,
+    firstName: user.firstName,
+    lastName: user.lastName,
+    bio: user.bio,
+    recipes: user.recipes,
+    createdAt: user.createdAt,
+    updatedAt: user.updatedAt,
+  };
 }
