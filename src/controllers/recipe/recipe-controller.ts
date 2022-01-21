@@ -26,9 +26,17 @@ export const createNewRecipe = async ({
     prepTimeMinutes,
   };
   const newRecipe = await RecipeModel.create(recipe);
-  const user = await UserModel.findById(postedBy);
+  await updateUserWithNewRecipe({ newRecipe });
+  return newRecipe;
+};
+
+async function updateUserWithNewRecipe({
+  newRecipe,
+}: {
+  newRecipe: IRecipeDocument;
+}): Promise<void> {
+  const user = await UserModel.findById(newRecipe.postedBy);
   user.recipes[`${newRecipe._id}`] = new Date();
   user.markModified("recipes");
   await user.save();
-  return newRecipe;
-};
+}
