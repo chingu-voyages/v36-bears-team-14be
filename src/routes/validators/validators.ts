@@ -44,7 +44,8 @@ export const newRecipeDirectionsValidator = (): any[] => {
       },
       "directions.*.imageUrl": {
         optional: { options: { nullable: true } },
-        isString: true,
+        errorMessage: `Incorrect formatting or data for URL`,
+        isURL: true,
       },
     }),
   ];
