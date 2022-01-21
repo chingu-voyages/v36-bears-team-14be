@@ -1,6 +1,5 @@
 import { UserModel } from "../../models/user/user.schema";
 import {
-  IUser,
   IUserDocument,
   IUserRegistrationDetails,
   TSecureUser,

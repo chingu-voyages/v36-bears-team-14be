@@ -1,6 +1,5 @@
 import { MongoMemoryServer } from "mongodb-memory-server";
 import mongoose from "mongoose";
-import { UserModel } from "../../models/user/user.schema";
 import { checkPassword } from "../../utils/crypto";
 import { createTestUsers } from "./create-dummy-users";
 let mongoServer: any;

@@ -2,8 +2,6 @@ import { RecipeModel } from "../../models/recipe/recipe.schema";
 import {
   IRecipeDocument,
   TRecipeCreationData,
-  TRecipeIngredient,
-  TRecipeStep,
 } from "../../models/recipe/recipe.types";
 import { UserModel } from "../../models/user/user.schema";
 

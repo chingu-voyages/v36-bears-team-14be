@@ -1,6 +1,4 @@
 import { Schema, model, SchemaOptions } from "mongoose";
-import mongoose from "mongoose";
-
 import { createNewRecipe } from "../../controllers/recipe/recipe-controller";
 import { IRecipe, IRecipeDocument, IRecipeModel } from "./recipe.types";
 interface SchemaOptionsWithPojoToMixed extends SchemaOptions {

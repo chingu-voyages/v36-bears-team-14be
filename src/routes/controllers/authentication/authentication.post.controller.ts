@@ -1,4 +1,3 @@
-import * as express from "express";
 import { Request, Response, NextFunction } from "express";
 import passport from "passport";
 import { UserModel } from "../../../models/user/user.schema";
