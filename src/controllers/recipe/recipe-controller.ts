@@ -1,6 +1,7 @@
 import { RecipeModel } from "../../models/recipe/recipe.schema";
 import {
   IRecipeDocument,
+  TRecipeCreationData,
   TRecipeIngredient,
   TRecipeStep,
 } from "../../models/recipe/recipe.types";
@@ -12,19 +13,17 @@ export const createNewRecipe = async ({
   postedBy,
   ingredients,
   directions,
-}: {
-  name: string;
-  description: string;
-  postedBy: string;
-  ingredients: TRecipeIngredient[];
-  directions: TRecipeStep[];
-}): Promise<IRecipeDocument> => {
+  cookTimeMinutes,
+  prepTimeMinutes,
+}: TRecipeCreationData): Promise<IRecipeDocument> => {
   const recipe = {
     name,
     description,
     postedBy,
     ingredients,
     directions,
+    cookTimeMinutes,
+    prepTimeMinutes,
   };
   const newRecipe = await RecipeModel.create(recipe);
   const user = await UserModel.findById(postedBy);

@@ -24,6 +24,17 @@ export type TRecipeStep = {
   imageUrl?: string;
 };
 
+export type TRecipeCreationData = Pick<
+  IRecipe,
+  | "name"
+  | "description"
+  | "postedBy"
+  | "ingredients"
+  | "directions"
+  | "cookTimeMinutes"
+  | "prepTimeMinutes"
+>;
+
 export interface IRecipeDocument extends IRecipe, Document {}
 export interface IRecipeModel extends Model<IRecipeDocument> {
   createNewRecipe: ({
@@ -32,11 +43,7 @@ export interface IRecipeModel extends Model<IRecipeDocument> {
     postedBy,
     ingredients,
     directions,
-  }: {
-    name: string;
-    description: string;
-    postedBy: string;
-    ingredients: TRecipeIngredient[];
-    directions: TRecipeStep[];
-  }) => Promise<IRecipeDocument>;
+    cookTimeMinutes,
+    prepTimeMinutes,
+  }: TRecipeCreationData) => Promise<IRecipeDocument>;
 }
