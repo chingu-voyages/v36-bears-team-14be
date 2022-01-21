@@ -23,6 +23,7 @@ export const createTestUsers = async ({
       recipes: {},
       createdAt: new Date(),
       updatedAt: new Date(),
+      favoriteFoods: [],
     });
   }
   return UserModel.create(dummyUsers);

@@ -64,5 +64,6 @@ export function adaptUserToSecure(user: IUserDocument): TSecureUser {
     recipes: user.recipes,
     createdAt: user.createdAt,
     updatedAt: user.updatedAt,
+    favoriteFoods: user.favoriteFoods,
   };
 }
