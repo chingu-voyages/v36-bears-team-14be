@@ -1,4 +1,4 @@
-import { body, param, validationResult } from "express-validator";
+import { body, checkSchema, param, validationResult } from "express-validator";
 
 export const validate = (req: any, res: any, next: any): any => {
   const errors = validationResult(req);
@@ -14,12 +14,73 @@ export const loginAuthenticationValidator = (): any[] => {
     body("password").not().isEmpty(),
   ];
 };
-export const newRecipeValidator = (): any[] => {
+export const newRecipeBasicValidator = (): any[] => {
   return [
     body("name").not().isEmpty().trim().escape(),
     body("description").not().isEmpty().trim().escape(),
-    body("ingredients").isArray(),
-    body("directions").isArray(),
+    body("cookTimeMinutes").isNumeric().exists(),
+    body("prepTimeMinutes").isNumeric().exists(),
+  ];
+};
+
+export const newRecipeDirectionsValidator = (): any[] => {
+  return [
+    checkSchema({
+      directions: {
+        isArray: true,
+        exists: true,
+        errorMessage: "`directions` must exist and must be an array.",
+        isLength: {
+          options: [{ min: 0, max: 20 }],
+        },
+      },
+      "directions.*.description": {
+        isString: true,
+        exists: true,
+        errorMessage: "Missing `description` property",
+        isLength: {
+          options: { min: 0 },
+        },
+      },
+      "directions.*.imageUrl": {
+        optional: { options: { nullable: true } },
+        isString: true,
+      },
+    }),
+  ];
+};
+export const newRecipeIngredientsValidator = (): any[] => {
+  return [
+    checkSchema({
+      ingredients: {
+        isArray: true,
+        exists: true,
+        errorMessage: "`ingredients` must exist and must be an array.",
+        isLength: {
+          options: { min: 0 },
+        },
+      },
+      "ingredients.*.name": {
+        isString: true,
+        exists: true,
+        errorMessage: "Missing/invalid `name` property",
+        trim: true,
+      },
+      "ingredients.*.quantity": {
+        isNumeric: true,
+        exists: true,
+        errorMessage: "Missing/invalid `quantity` property",
+      },
+      "ingredients.*.unit": {
+        isString: true,
+        exists: true,
+        errorMessage: "Missing/invalid `unit` property",
+        trim: true,
+        isLength: {
+          options: { min: 0 },
+        },
+      },
+    }),
   ];
 };
 export const registerNewUserValidator = (): any[] => {
