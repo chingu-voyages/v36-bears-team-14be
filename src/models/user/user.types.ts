@@ -56,7 +56,7 @@ export interface IUserModel extends Model<IUserDocument> {
   }: {
     id: string;
     bio?: string;
-    favoriteFoods?: Array<string>[];
+    favoriteFoods?: Array<string>;
     photoUrl?: string;
   }) => Promise<TSecureUser>;
 }
