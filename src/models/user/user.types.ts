@@ -9,6 +9,7 @@ export interface IUser {
   favoriteFoods: Array<string>;
   createdAt: Date;
   updatedAt: Date;
+  photoUrl?: string;
 }
 
 export interface IUserRegistrationDetails {
@@ -28,6 +29,7 @@ export type TSecureUser = Pick<
   | "createdAt"
   | "updatedAt"
   | "favoriteFoods"
+  | "photoUrl"
 >;
 
 export interface IUserDocument extends IUser, Document {}
@@ -46,4 +48,15 @@ export interface IUserModel extends Model<IUserDocument> {
   }) => Promise<IUserDocument>;
   getUserByIdSecure: ({ id }: { id: string }) => Promise<TSecureUser>;
   getAllUsersSecure: () => Promise<TSecureUser[]>;
+  patchUserByIdSecure: ({
+    id,
+    bio,
+    favoriteFoods,
+    photoUrl,
+  }: {
+    id: string;
+    bio?: string;
+    favoriteFoods?: Array<string>[];
+    photoUrl?: string;
+  }) => Promise<TSecureUser>;
 }
