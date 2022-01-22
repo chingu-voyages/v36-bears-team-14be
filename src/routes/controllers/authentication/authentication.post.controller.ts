@@ -1,6 +1,6 @@
-import * as express from "express";
 import { Request, Response, NextFunction } from "express";
 import passport from "passport";
+import { adaptUserToSecure } from "../../../controllers/user/user.statics";
 import { UserModel } from "../../../models/user/user.schema";
 import { IUserRegistrationDetails } from "../../../models/user/user.types";
 
@@ -51,7 +51,8 @@ export const registerNewLocalUser = async (
             error: `Unable to register user due to server error ${err}`,
           });
         }
-        return res.status(200).send(newUser);
+        const secureNewUser = adaptUserToSecure(newUser);
+        return res.status(200).send(secureNewUser);
       });
     }
   } catch (exception) {

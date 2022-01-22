@@ -19,6 +19,7 @@ const userSchema = new Schema<IUser>(
     hashedPassword: { type: String, required: true },
     bio: { type: String, required: false, default: "" },
     recipes: { type: Schema.Types.Mixed, required: false, default: {} },
+    favoriteFoods: { type: [String], required: false, default: [] },
   },
   {
     timestamps: true,

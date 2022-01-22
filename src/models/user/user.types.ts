@@ -6,6 +6,7 @@ export interface IUser {
   hashedPassword: string;
   bio: string;
   recipes: { [keyof: string]: Date };
+  favoriteFoods: Array<string>;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -26,6 +27,7 @@ export type TSecureUser = Pick<
   | "recipes"
   | "createdAt"
   | "updatedAt"
+  | "favoriteFoods"
 >;
 
 export interface IUserDocument extends IUser, Document {}

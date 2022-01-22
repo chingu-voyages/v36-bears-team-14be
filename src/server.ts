@@ -5,6 +5,7 @@ import cors from "cors";
 import connectDB from "./database.config";
 import authentication from "./routes/authentication";
 import user from "./routes/user";
+import recipe from "./routes/recipe";
 import passport from "passport";
 import { validateAPIToken } from "./middleware/verify-api-token";
 import {
@@ -57,6 +58,7 @@ const port = app.get("port");
 
 app.use("/api/authentication", authentication);
 app.use("/api/user", user);
+app.use("/api/recipe", recipe);
 const server = app.listen(port, () =>
   console.log(`Server started on port ${port}`)
 );

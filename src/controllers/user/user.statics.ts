@@ -1,6 +1,5 @@
 import { UserModel } from "../../models/user/user.schema";
 import {
-  IUser,
   IUserDocument,
   IUserRegistrationDetails,
   TSecureUser,
@@ -65,5 +64,6 @@ export function adaptUserToSecure(user: IUserDocument): TSecureUser {
     recipes: user.recipes,
     createdAt: user.createdAt,
     updatedAt: user.updatedAt,
+    favoriteFoods: user.favoriteFoods,
   };
 }
