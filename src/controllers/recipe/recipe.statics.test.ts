@@ -3,7 +3,8 @@ import mongoose from "mongoose";
 import { RecipeModel } from "../../models/recipe/recipe.schema";
 import { TRecipeCreationData } from "../../models/recipe/recipe.types";
 import { UserModel } from "../../models/user/user.schema";
-import { createTestUsers } from "../utils/create-dummy-users";
+import { createTestRecipes } from "../utils/create-test-recipes";
+import { createTestUsers } from "../utils/create-test-users";
 
 let mongoServer: any;
 
@@ -58,5 +59,31 @@ describe("Recipe controller tests", () => {
         testUser.recipes[`${freshlyCreatedRecipe._id.toString()}`]
       ).toBeDefined();
     });
+  });
+});
+
+describe("recipe find recipes liked by user tests", () => {
+  test("finds recipes liked by user", async () => {
+    const testUsers = await createTestUsers({
+      count: 2,
+      plainTextPassword: "password",
+    });
+    const testRecipes = await createTestRecipes({
+      count: 20,
+      createdByUserId: testUsers[0]._id.toString(),
+    });
+
+    await Promise.all([
+      testRecipes[0].toggleLike(testUsers[1]._id.toString()),
+      testRecipes[1].toggleLike(testUsers[1]._id.toString()),
+      testRecipes[5].toggleLike(testUsers[1]._id.toString()),
+      testRecipes[15].toggleLike(testUsers[1]._id.toString()),
+      testRecipes[17].toggleLike(testUsers[1]._id.toString()),
+    ]);
+
+    const likedRecipes = await RecipeModel.findAllRecipesLikedByUser({
+      userId: testUsers[1]._id.toString(),
+    });
+    expect(likedRecipes.length).toBe(5);
   });
 });

@@ -38,3 +38,15 @@ async function updateUserWithNewRecipe({
   user.markModified("recipes");
   await user.save();
 }
+
+export const findAllRecipesLikedByUser = async ({
+  userId,
+}: {
+  userId: string;
+}): Promise<IRecipeDocument[]> => {
+  const mongoQuery = `likes.${userId}`;
+  const results = await RecipeModel.where({
+    [`${mongoQuery}`]: { $exists: true },
+  }).exec();
+  return results;
+};

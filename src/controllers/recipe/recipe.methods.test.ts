@@ -1,7 +1,7 @@
 import { MongoMemoryServer } from "mongodb-memory-server";
 import mongoose from "mongoose";
-import { createDummyRecipes } from "../utils/create-dummy-recipes";
-import { createTestUsers } from "../utils/create-dummy-users";
+import { createTestRecipes } from "../utils/create-test-recipes";
+import { createTestUsers } from "../utils/create-test-users";
 
 let mongoServer: any;
 
@@ -32,7 +32,7 @@ describe("recipe toggle likes tests", () => {
       count: 3,
       plainTextPassword: "password",
     });
-    const testRecipe = await createDummyRecipes({
+    const testRecipe = await createTestRecipes({
       count: 1,
       createdByUserId: testUsers[0]._id.toString(),
     });

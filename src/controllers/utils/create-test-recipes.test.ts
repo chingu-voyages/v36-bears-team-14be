@@ -1,7 +1,7 @@
 import { MongoMemoryServer } from "mongodb-memory-server";
 import mongoose from "mongoose";
-import { createDummyRecipes } from "./create-dummy-recipes";
-import { createTestUsers } from "./create-dummy-users";
+import { createTestRecipes } from "./create-test-recipes";
+import { createTestUsers } from "./create-test-users";
 let mongoServer: any;
 
 const options: mongoose.ConnectOptions = {
@@ -25,7 +25,7 @@ afterEach(async () => {
   await mongoServer.stop();
 });
 
-describe("create dummy recipes helper method tests", () => {
+describe("create test recipes helper method tests", () => {
   test("creates dummy recipes correctly, with the correct amount and properties", async () => {
     const dummyUser = await createTestUsers({
       count: 1,
@@ -33,7 +33,7 @@ describe("create dummy recipes helper method tests", () => {
     });
     const userId = dummyUser[0]._id;
 
-    const testRecipes = await createDummyRecipes({
+    const testRecipes = await createTestRecipes({
       count: 10,
       createdByUserId: userId,
     });

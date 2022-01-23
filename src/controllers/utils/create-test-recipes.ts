@@ -5,7 +5,7 @@ import { IRecipe, IRecipeDocument } from "../../models/recipe/recipe.types";
  *  Batch creates some dummy recipes that we can use for testing
  * @param param0
  */
-export const createDummyRecipes = async ({
+export const createTestRecipes = async ({
   count,
   createdByUserId,
 }: {

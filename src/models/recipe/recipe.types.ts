@@ -53,4 +53,9 @@ export interface IRecipeModel extends Model<IRecipeDocument> {
     cookTimeMinutes,
     prepTimeMinutes,
   }: TRecipeCreationData) => Promise<IRecipeDocument>;
+  findAllRecipesLikedByUser: ({
+    userId,
+  }: {
+    userId: string;
+  }) => Promise<IRecipeDocument[]>;
 }
