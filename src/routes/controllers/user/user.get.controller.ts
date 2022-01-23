@@ -17,7 +17,7 @@ export const getUserById = async (req: IRequest, res: Response) => {
 };
 
 export const getUserByIdMe = async (
-  req: IRequestUser,
+  req: IRequest,
   res: Response,
   next: NextFunction
 ) => {
@@ -36,7 +36,7 @@ export const getUserByIdMe = async (
 };
 
 export const getAllUsersSecureMiddleWare = async (
-  req: IRequestUser,
+  req: IRequest,
   res: Response
 ) => {
   try {
