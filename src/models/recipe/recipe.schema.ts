@@ -1,5 +1,6 @@
 import { Schema, model, SchemaOptions } from "mongoose";
-import { createNewRecipe } from "../../controllers/recipe/recipe-controller";
+import { toggleLike } from "../../controllers/recipe/recipe.methods";
+import { createNewRecipe } from "../../controllers/recipe/recipe.statics";
 import { IRecipe, IRecipeDocument, IRecipeModel } from "./recipe.types";
 interface SchemaOptionsWithPojoToMixed extends SchemaOptions {
   typePojoToMixed: boolean;
@@ -49,6 +50,7 @@ const RecipeSchema = new Schema<IRecipe>(
   } as SchemaOptionsWithPojoToMixed
 );
 
+RecipeSchema.methods.toggleLike = toggleLike;
 RecipeSchema.statics.createNewRecipe = createNewRecipe;
 export default RecipeSchema;
 

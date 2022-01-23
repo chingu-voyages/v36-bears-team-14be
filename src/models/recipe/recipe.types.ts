@@ -35,7 +35,14 @@ export type TRecipeCreationData = Pick<
   | "prepTimeMinutes"
 >;
 
-export interface IRecipeDocument extends IRecipe, Document {}
+export type TRecipeToggleLikeAction = {
+  actionTaken: "like" | "unlike";
+  updatedRecipeDocument: IRecipeDocument;
+};
+
+export interface IRecipeDocument extends IRecipe, Document {
+  toggleLike: (likedByUserId: string) => Promise<TRecipeToggleLikeAction>;
+}
 export interface IRecipeModel extends Model<IRecipeDocument> {
   createNewRecipe: ({
     name,
