@@ -1,5 +1,12 @@
-import { body, checkSchema, param, validationResult } from "express-validator";
-
+import {
+  body,
+  checkSchema,
+  param,
+  validationResult,
+  query,
+} from "express-validator";
+import mongoose from "mongoose";
+import { UserModel } from "../../models/user/user.schema";
 export const validate = (req: any, res: any, next: any): any => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -99,6 +106,18 @@ export const getParamIdValidator = (): any[] => {
   return [param("id").not().isEmpty().trim().escape()];
 };
 
+export const toggleLikeParamIdValidator = (): any[] => {
+  return [
+    param("id")
+      .exists()
+      .custom(async (value: string) => {
+        if (!mongoose.Types.ObjectId.isValid(value)) {
+          return Promise.reject("Recipe id is invalid");
+        }
+      }),
+  ];
+};
+
 export const patchUserValidator = (): any[] => {
   return [
     checkSchema({
@@ -122,5 +141,25 @@ export const patchUserValidator = (): any[] => {
         errorMessage: "`bio` must exist.",
       },
     }),
+  ];
+};
+
+export const validateLikeQueryParams = (): any[] => {
+  return [
+    query("userId")
+      .exists()
+      .custom(async (value: string) => {
+        // we'll accept the user id as me or a correct mongo _id
+        if (value === "me") return Promise.resolve(true);
+        if (!mongoose.Types.ObjectId.isValid(value)) {
+          return Promise.reject("Invalid userId");
+        }
+
+        const user = await UserModel.findById(value);
+        if (!user) return Promise.reject("no such user");
+        return Promise.resolve(true);
+      })
+      .trim()
+      .escape(),
   ];
 };
