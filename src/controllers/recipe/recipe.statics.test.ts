@@ -85,5 +85,10 @@ describe("recipe find recipes liked by user tests", () => {
       userId: testUsers[1]._id.toString(),
     });
     expect(likedRecipes.length).toBe(5);
+    expect(
+      likedRecipes.every(
+        (recipe) => !!recipe.likes[`${testUsers[1]._id.toString()}`]
+      )
+    ).toBe(true);
   });
 });
