@@ -1,5 +1,6 @@
 import * as express from "express";
 import { protectedRoute } from "../middleware/protected-route";
+import { postNewRecipe } from "./controllers/recipe/recipe.post.controller";
 import {
   newRecipeBasicValidator,
   newRecipeDirectionsValidator,
@@ -14,6 +15,7 @@ router.post(
   newRecipeBasicValidator(),
   newRecipeIngredientsValidator(),
   newRecipeDirectionsValidator(),
-  validate
+  validate,
+  postNewRecipe
 );
 export default router;

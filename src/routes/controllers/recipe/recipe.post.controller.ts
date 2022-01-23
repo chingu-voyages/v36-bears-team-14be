@@ -1,12 +1,8 @@
-import { NextFunction, Response } from "express";
+import { Response } from "express";
 import { RecipeModel } from "../../../models/recipe/recipe.schema";
 import { IRequest } from "../../definitions";
 
-export const postNewRecipe = async (
-  req: IRequest,
-  res: Response,
-  next: NextFunction
-) => {
+export const postNewRecipe = async (req: IRequest, res: Response) => {
   const {
     name,
     description,
