@@ -1,12 +1,8 @@
-import { Request, Response } from "express";
+import { Response } from "express";
 import { UserModel } from "../../../models/user/user.schema";
-interface IRequestUser extends Request {
-  user: {
-    id: string;
-  };
-}
+import { IRequest } from "../../definitions";
 
-export const patchUserByIdMe = async (req: IRequestUser, res: Response) => {
+export const patchUserByIdMe = async (req: IRequest, res: Response) => {
   if (req.params.id !== "me") {
     return res
       .status(400)
