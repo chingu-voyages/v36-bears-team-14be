@@ -50,6 +50,30 @@ export async function getAllUsersSecure(): Promise<TSecureUser[]> {
   });
 }
 
+export async function patchUserByIdSecure({
+  id,
+  bio,
+  favoriteFoods,
+  photoUrl,
+}: {
+  id: string;
+  bio?: string;
+  favoriteFoods?: Array<string>;
+  photoUrl?: string;
+}): Promise<TSecureUser> {
+  const user = await UserModel.findById(id);
+  if (bio) {
+    user.bio = bio;
+  }
+  if (favoriteFoods) {
+    user.favoriteFoods = favoriteFoods;
+  }
+  if (photoUrl) {
+    user.photoUrl = photoUrl;
+  }
+  await user.save();
+  return adaptUserToSecure(user);
+}
 /**
  *
  * @param user IUser
@@ -65,5 +89,6 @@ export function adaptUserToSecure(user: IUserDocument): TSecureUser {
     createdAt: user.createdAt,
     updatedAt: user.updatedAt,
     favoriteFoods: user.favoriteFoods,
+    photoUrl: user.photoUrl,
   };
 }

@@ -98,3 +98,29 @@ export const registerNewUserValidator = (): any[] => {
 export const getParamIdValidator = (): any[] => {
   return [param("id").not().isEmpty().trim().escape()];
 };
+
+export const patchUserValidator = (): any[] => {
+  return [
+    checkSchema({
+      favoriteFoods: {
+        isArray: true,
+        exists: true,
+        errorMessage: "`favoriteFoods` must exist and must be an array.",
+        isLength: {
+          options: { min: 0 },
+        },
+      },
+      photoUrl: {
+        isString: true,
+        isURL: true,
+        exists: true,
+        errorMessage: "`photoUrl` must exist.",
+      },
+      bio: {
+        isString: true,
+        exists: true,
+        errorMessage: "`bio` must exist.",
+      },
+    }),
+  ];
+};

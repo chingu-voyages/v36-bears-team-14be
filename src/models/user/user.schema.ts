@@ -4,6 +4,7 @@ import {
   findOneByEmail,
   getAllUsersSecure,
   getUserByIdSecure,
+  patchUserByIdSecure,
 } from "../../controllers/user/user.statics";
 import { IUser, IUserDocument, IUserModel } from "./user.types";
 
@@ -20,6 +21,7 @@ const userSchema = new Schema<IUser>(
     bio: { type: String, required: false, default: "" },
     recipes: { type: Schema.Types.Mixed, required: false, default: {} },
     favoriteFoods: { type: [String], required: false, default: [] },
+    photoUrl: { type: String, required: false },
   },
   {
     timestamps: true,
@@ -32,5 +34,6 @@ userSchema.statics.findOneByEmail = findOneByEmail;
 userSchema.statics.createUser = createUser;
 userSchema.statics.getUserByIdSecure = getUserByIdSecure;
 userSchema.statics.getAllUsersSecure = getAllUsersSecure;
+userSchema.statics.patchUserByIdSecure = patchUserByIdSecure;
 export default userSchema;
 export const UserModel = model<IUserDocument, IUserModel>("user", userSchema);
