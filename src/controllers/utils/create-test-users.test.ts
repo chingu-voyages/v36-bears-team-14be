@@ -1,7 +1,7 @@
 import { MongoMemoryServer } from "mongodb-memory-server";
 import mongoose from "mongoose";
 import { checkPassword } from "../../utils/crypto";
-import { createTestUsers } from "./create-dummy-users";
+import { createTestUsers } from "./create-test-users";
 let mongoServer: any;
 
 const options: mongoose.ConnectOptions = {

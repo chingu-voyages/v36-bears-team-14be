@@ -1,11 +1,8 @@
-import { Request, Response, NextFunction } from "express";
+import { Response, NextFunction } from "express";
 import { UserModel } from "../../../models/user/user.schema";
-interface IRequestUser extends Request {
-  user: {
-    id: string;
-  };
-}
-export const getUserById = async (req: IRequestUser, res: Response) => {
+import { IRequest } from "../../definitions";
+
+export const getUserById = async (req: IRequest, res: Response) => {
   const { id } = req.params;
   try {
     const secureUser = await UserModel.getUserByIdSecure({ id });
@@ -20,7 +17,7 @@ export const getUserById = async (req: IRequestUser, res: Response) => {
 };
 
 export const getUserByIdMe = async (
-  req: IRequestUser,
+  req: IRequest,
   res: Response,
   next: NextFunction
 ) => {
@@ -39,7 +36,7 @@ export const getUserByIdMe = async (
 };
 
 export const getAllUsersSecureMiddleWare = async (
-  req: IRequestUser,
+  req: IRequest,
   res: Response
 ) => {
   try {
