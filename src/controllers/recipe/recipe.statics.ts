@@ -2,6 +2,7 @@ import { RecipeModel } from "../../models/recipe/recipe.schema";
 import {
   IRecipeDocument,
   RecipeQueryContext,
+  TDeleteRecipeByIdResult,
   TRecipeCreationData,
 } from "../../models/recipe/recipe.types";
 import { UserModel } from "../../models/user/user.schema";
@@ -85,3 +86,37 @@ export async function getRecipeById(id: string): Promise<IRecipeDocument> {
   const recipe = await RecipeModel.findById(id);
   return recipe;
 }
+export const deleteRecipeById = async ({
+  userId,
+  recipeId,
+}: {
+  userId: string;
+  recipeId: string;
+}): Promise<TDeleteRecipeByIdResult> => {
+  const recipe = await RecipeModel.findById(recipeId);
+  const user = await UserModel.findById(userId);
+  if (!user) {
+    throw new Error("Could not find the user");
+  }
+  if (!recipe) {
+    throw new Error("Could not find the recipe");
+  }
+  if (recipe.postedBy === userId) {
+    await recipe.delete();
+    delete user.recipes[recipe._id];
+    user.markModified("recipes");
+    await user.save();
+    const userRecipes = await getAllRecipesByUser({ userId });
+    return { user, recipes: userRecipes };
+  } else {
+    throw new Error("You can only delete your own recipes");
+  }
+};
+export const getAllRecipesByUser = async ({
+  userId,
+}: {
+  userId: string;
+}): Promise<IRecipeDocument[]> => {
+  const recipes = await RecipeModel.where({ "postedBy": userId });
+  return recipes;
+};

@@ -2,6 +2,7 @@ import { Schema, model, SchemaOptions } from "mongoose";
 import { toggleLike } from "../../controllers/recipe/recipe.methods";
 import {
   createNewRecipe,
+  deleteRecipeById,
   findAllRecipesLikedByUser,
   findRecipesByContextLimitSkip,
   getRecipeById,
@@ -61,6 +62,7 @@ RecipeSchema.statics.findAllRecipesLikedByUser = findAllRecipesLikedByUser;
 RecipeSchema.statics.findRecipesByContextLimitSkip =
   findRecipesByContextLimitSkip;
 RecipeSchema.statics.getRecipeById = getRecipeById;
+RecipeSchema.statics.deleteRecipeById = deleteRecipeById;
 export default RecipeSchema;
 
 export const RecipeModel = model<IRecipeDocument, IRecipeModel>(

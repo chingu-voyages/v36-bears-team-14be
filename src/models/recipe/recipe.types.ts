@@ -1,4 +1,5 @@
 import { Document, Model } from "mongoose";
+import { IUserDocument } from "../user/user.types";
 export interface IRecipe {
   name: string;
   description: string;
@@ -47,6 +48,10 @@ export enum RecipeQueryContext {
   AllRecipes = "allRecipes",
 }
 
+export type TDeleteRecipeByIdResult = {
+  user: IUserDocument;
+  recipes: IRecipeDocument[];
+};
 export interface IRecipeDocument extends IRecipe, Document {
   toggleLike: (likedByUserId: string) => Promise<TRecipeToggleLikeAction>;
 }
@@ -76,4 +81,11 @@ export interface IRecipeModel extends Model<IRecipeDocument> {
   }) => Promise<IRecipeDocument[]>;
 
   getRecipeById: (id: string) => Promise<IRecipeDocument>;
+  deleteRecipeById: ({
+    userId,
+    recipeId,
+  }: {
+    userId: string;
+    recipeId: string;
+  }) => Promise<IRecipeModel[]>;
 }
