@@ -50,3 +50,11 @@ export const findAllRecipesLikedByUser = async ({
   }).exec();
   return results;
 };
+
+export const findAllRecipesPaginated = async ({
+  skip,
+  limit,
+}: {
+  skip?: number;
+  limit?: number;
+}): Promise<void> => {};
