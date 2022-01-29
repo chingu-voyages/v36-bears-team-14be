@@ -81,3 +81,7 @@ export const findRecipesByContextLimitSkip = async ({
       throw new Error(`Invalid query context: ${context}`);
   }
 };
+export async function getRecipeById(id: string): Promise<IRecipeDocument> {
+  const recipe = await RecipeModel.findById(id);
+  return recipe;
+}

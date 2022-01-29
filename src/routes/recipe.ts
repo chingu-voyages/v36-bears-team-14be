@@ -3,11 +3,13 @@ import { protectedRoute } from "../middleware/protected-route";
 import {
   getRecipesLikeByUserId,
   performRecipeQuery,
+  getRecipeById,
 } from "./controllers/recipe/recipe.get.controller";
 import { patchToggleLike } from "./controllers/recipe/recipe.patch.controller";
 import { postNewRecipe } from "./controllers/recipe/recipe.post.controller";
 import {
   getRecipeQueryValidator,
+  getParamIdValidator,
   newRecipeBasicValidator,
   newRecipeDirectionsValidator,
   newRecipeIngredientsValidator,
@@ -49,5 +51,11 @@ router.get(
   getRecipeQueryValidator(),
   validate,
   performRecipeQuery
+)
+router.get("/:id",
+  protectedRoute,
+  getParamIdValidator(),
+  validate,
+  getRecipeById
 );
 export default router;
