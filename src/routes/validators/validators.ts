@@ -171,9 +171,13 @@ export const getRecipeQueryValidator = (): any[] => {
     query("context")
       .exists()
       .custom((value: string) => {
-        if (!Object.keys(RecipeQueryContext).includes(value)) return false;
-        return true;
-      }),
+        return Object.values(RecipeQueryContext).includes(
+          value as RecipeQueryContext
+        );
+      })
+      .withMessage(
+        "The type of query (context) specified in the query parameters is invalid and/or not supported"
+      ),
     query("limit").exists().isInt(),
     query("skip").exists().isInt(),
   ];

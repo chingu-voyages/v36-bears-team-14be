@@ -41,7 +41,6 @@ export type TRecipeToggleLikeAction = {
 };
 
 export enum RecipeQueryContext {
-  LandingPage = "landingPage",
   PopularRecipes = "popularRecipes",
   QuickRecipes = "quickRecipes",
   SimpleRecipes = "simpleRecipes",
