@@ -36,10 +36,21 @@ describe("create test recipes helper method tests", () => {
     const testRecipes = await createTestRecipes({
       count: 10,
       createdByUserId: userId,
+      directions: [
+        { description: "step1" },
+        { description: "step1" },
+        { description: "step1" },
+        { description: "step1" },
+        { description: "step1" },
+      ],
+      ingredients: [{ name: "ingredient1", quantity: 2, unit: "tablespoons" }],
     });
     expect(testRecipes.length).toBe(10);
     expect(testRecipes[3].name).toBe("recipe3.name");
     expect(testRecipes[2].postedBy).toBe(userId.toString());
     expect(testRecipes[1].description).toBe("recipe1.description");
+    expect(testRecipes[0].directions.length).toBe(5);
+    expect(testRecipes[0].ingredients.length).toBe(1);
+    expect(testRecipes[0].ingredients[0].unit).toBe("tablespoons");
   });
 });

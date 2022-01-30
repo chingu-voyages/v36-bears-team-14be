@@ -1,6 +1,10 @@
 import { MongoMemoryServer } from "mongodb-memory-server";
 import mongoose from "mongoose";
-import { RecipeQueryContext } from "../../models/recipe/recipe.types";
+import {
+  RecipeQueryContext,
+  TRecipeIngredient,
+  TRecipeStep,
+} from "../../models/recipe/recipe.types";
 import { createTestRecipes } from "../utils/create-test-recipes";
 import { createTestUsers } from "../utils/create-test-users";
 import { findRecipesByContextLimitSkip } from "./recipe.statics";
@@ -155,6 +159,106 @@ describe("recipe queries", () => {
       expect(queryResults[0]._id.toString()).toBe(r3[0]._id.toString());
       expect(queryResults[4]._id.toString()).toBe(r4[0]._id.toString());
       expect(queryResults.length).toBe(5);
+    });
+    test("simple recipes query test", async () => {
+      const testUsers = await createTestUsers({
+        count: 1,
+        plainTextPassword: "password",
+      });
+
+      const mapper = ({
+        count,
+        object,
+      }: {
+        count: number;
+        object: any;
+      }): TRecipeIngredient[] | TRecipeStep[] => {
+        const arr: any[] = [];
+        for (let i = 0; i < count; i++) {
+          arr.push(object);
+        }
+        return arr;
+      };
+
+      await createTestRecipes({
+        createdByUserId: testUsers[0]._id.toString(),
+        count: 1,
+        prepTimeMinutes: 5,
+        cookTimeMinutes: 10,
+        directions: mapper({
+          count: 5,
+          object: { description: "d1" },
+        }) as TRecipeStep[],
+        ingredients: mapper({
+          count: 9,
+          object: { name: "ingredientName1", quantity: 1, unit: "cup" },
+        }) as TRecipeIngredient[],
+      });
+      await createTestRecipes({
+        createdByUserId: testUsers[0]._id.toString(),
+        count: 1,
+        prepTimeMinutes: 5,
+        cookTimeMinutes: 5,
+        directions: mapper({
+          count: 1,
+          object: { description: "d1" },
+        }) as TRecipeStep[],
+        ingredients: mapper({
+          count: 1,
+          object: { name: "ingredientName1", quantity: 1, unit: "cup" },
+        }) as TRecipeIngredient[],
+      });
+      await createTestRecipes({
+        createdByUserId: testUsers[0]._id.toString(),
+        count: 1,
+        prepTimeMinutes: 10,
+        cookTimeMinutes: 10,
+        directions: mapper({
+          count: 7,
+          object: { description: "d1" },
+        }) as TRecipeStep[],
+        ingredients: mapper({
+          count: 12,
+          object: { name: "ingredientName1", quantity: 1, unit: "cup" },
+        }) as TRecipeIngredient[],
+      });
+      const r3 = await createTestRecipes({
+        createdByUserId: testUsers[0]._id.toString(),
+        count: 1,
+        prepTimeMinutes: 0,
+        cookTimeMinutes: 5,
+        directions: mapper({
+          count: 2,
+          object: { description: "d1" },
+        }) as TRecipeStep[],
+        ingredients: mapper({
+          count: 2,
+          object: { name: "ingredientName1", quantity: 1, unit: "cup" },
+        }) as TRecipeIngredient[],
+      });
+      const r4 = await createTestRecipes({
+        createdByUserId: testUsers[0]._id.toString(),
+        count: 1,
+        prepTimeMinutes: 3,
+        cookTimeMinutes: 60,
+        directions: mapper({
+          count: 7,
+          object: { description: "d1" },
+        }) as TRecipeStep[],
+        ingredients: mapper({
+          count: 20,
+          object: { name: "ingredientName1", quantity: 1, unit: "cup" },
+        }) as TRecipeIngredient[],
+      });
+
+      const queryResults = await findRecipesByContextLimitSkip({
+        context: RecipeQueryContext.SimpleRecipes,
+        limit: 5,
+      });
+
+      expect(queryResults[4]._id.toString()).toBe(r4[0]._id.toString());
+      expect(queryResults[4]._id.toString()).toBe(r4[0]._id.toString());
+      expect(queryResults[0]._id.toString()).toBe(r3[0]._id.toString());
     });
   });
 });
