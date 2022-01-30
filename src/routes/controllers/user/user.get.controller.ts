@@ -21,7 +21,7 @@ export const getUserByIdMe = async (
   res: Response,
   next: NextFunction
 ) => {
-  if (req.params.id !== "me") next();
+  if (req.params.id && req.params.id !== "me") return next();
   try {
     const { id } = req.user;
     const secureUser = await UserModel.getUserByIdSecure({ id });
@@ -30,18 +30,6 @@ export const getUserByIdMe = async (
     } else {
       return res.status(404).send({ error: `Cannot find session user by id` });
     }
-  } catch (exception) {
-    return res.status(500).send({ error: exception.message });
-  }
-};
-
-export const getAllUsersSecureMiddleWare = async (
-  req: IRequest,
-  res: Response
-) => {
-  try {
-    const secureUsers = await UserModel.getAllUsersSecure();
-    return res.status(200).send(secureUsers);
   } catch (exception) {
     return res.status(500).send({ error: exception.message });
   }
