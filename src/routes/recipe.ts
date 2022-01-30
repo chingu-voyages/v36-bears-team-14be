@@ -51,8 +51,9 @@ router.get(
   getRecipeQueryValidator(),
   validate,
   performRecipeQuery
-)
-router.get("/:id",
+);
+router.get(
+  "/:id",
   protectedRoute,
   getParamIdValidator(),
   validate,

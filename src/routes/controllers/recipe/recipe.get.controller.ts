@@ -36,9 +36,9 @@ export const performRecipeQuery = async (req: IRequest, res: Response) => {
     });
     return res.status(200).send(results);
   } catch (exception) {
-    return res.status(500).send({ error: exception.message })
+    return res.status(500).send({ error: exception.message });
   }
-}
+};
 export const getRecipeById = async (
   req: IRequest,
   res: Response,
