@@ -2,11 +2,17 @@ import { RecipeModel } from "../../models/recipe/recipe.schema";
 import {
   IRecipeDocument,
   RecipeQueryContext,
+  //TLandingPageQueryResults,
   TRecipeCreationData,
 } from "../../models/recipe/recipe.types";
 import { UserModel } from "../../models/user/user.schema";
 
-import { getAllRecipes, getPopularRecipes } from "./recipe.queries";
+import {
+  getAllRecipes,
+  getPopularRecipes,
+  getQuickRecipes,
+  getSimpleRecipes,
+} from "./recipe.queries";
 
 export const createNewRecipe = async ({
   name,
@@ -68,7 +74,15 @@ export const findRecipesByContextLimitSkip = async ({
       return getAllRecipes({ limit, skip });
     case RecipeQueryContext.PopularRecipes:
       return getPopularRecipes({ limit, skip });
+    case RecipeQueryContext.QuickRecipes:
+      return getQuickRecipes({ limit, skip });
+    case RecipeQueryContext.SimpleRecipes:
+      return getSimpleRecipes({ limit, skip });
     default:
-      return [];
+      throw new Error(`Invalid query context: ${context}`);
   }
 };
+
+// export const findLandingPageRecipes = async({ limit, skip}: { limit?: number, skip?: number}): Promise<TLandingPageQueryResults> => {
+
+// }

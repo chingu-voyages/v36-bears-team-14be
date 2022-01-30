@@ -49,3 +49,76 @@ export const getPopularRecipes = async ({
 
   return RecipeModel.aggregate(pipeLine).skip(skip ?? 0);
 };
+
+export const getQuickRecipes = async ({
+  limit,
+  skip,
+}: {
+  limit?: number;
+  skip?: number;
+}): Promise<IRecipeDocument[]> => {
+  // Quick recipes are sorted by prepTime + cookTime - lowest to highest
+  const pipeLine: any[] = [
+    {
+      "$set": {
+        "totalPrepCookTime": {
+          "$sum": ["$cookTimeMinutes", "$prepTimeMinutes"],
+        },
+      },
+    },
+    {
+      "$sort": {
+        "totalPrepCookTime": 1,
+      },
+    },
+    {
+      "$unset": ["totalPrepCookTime"],
+    },
+  ];
+  if (limit && limit > 0) {
+    return RecipeModel.aggregate(pipeLine)
+      .skip(skip ?? 0)
+      .limit(limit);
+  }
+
+  return RecipeModel.aggregate(pipeLine).skip(skip ?? 0);
+};
+
+export const getSimpleRecipes = async ({
+  limit,
+  skip,
+}: {
+  limit?: number;
+  skip?: number;
+}): Promise<IRecipeDocument[]> => {
+  // Simple should be the quickest prep time, the fewest ingredients and the fewest direction steps?
+
+  const pipeLine: any[] = [
+    {
+      "$set": {
+        "totalPrepCookTime": {
+          "$sum": ["$cookTimeMinutes", "$prepTimeMinutes"],
+        },
+      },
+    },
+    {
+      "$sort": {
+        "totalPrepCookTime": 1,
+      },
+    },
+    {
+      "$set": {
+        "totalIngredients": {
+          "$size": "ingredients",
+        },
+      },
+    },
+  ];
+  if (limit && limit > 0) {
+    return RecipeModel.aggregate(pipeLine)
+      .skip(skip ?? 0)
+      .limit(limit);
+  }
+
+  return RecipeModel.aggregate(pipeLine).skip(skip ?? 0);
+};
