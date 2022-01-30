@@ -74,4 +74,6 @@ export interface IRecipeModel extends Model<IRecipeDocument> {
     skip?: number;
     limit?: number;
   }) => Promise<IRecipeDocument[]>;
+
+  getRecipeById: (id: string) => Promise<IRecipeDocument>;
 }
