@@ -91,8 +91,10 @@ export const getSimpleRecipes = async ({
   limit?: number;
   skip?: number;
 }): Promise<IRecipeDocument[]> => {
-  // Simple should be the quickest prep time, the fewest ingredients and the fewest direction steps?
+  /* Add the totalPrepCookTime, totalIngredients and totalSteps together to
+  get a total effort number. Then sort it from lowest to highest
 
+  */
   const pipeLine: any[] = [
     {
       "$set": {
@@ -102,17 +104,32 @@ export const getSimpleRecipes = async ({
       },
     },
     {
-      "$sort": {
-        "totalPrepCookTime": 1,
+      "$set": {
+        "totalIngredients": {
+          "$size": "$ingredients",
+        },
       },
     },
     {
       "$set": {
-        "totalIngredients": {
-          "$size": "ingredients",
+        "totalSteps": {
+          "$size": "$directions",
         },
       },
     },
+    {
+      "$set": {
+        "totalEffort": {
+          "$sum": ["$totalPrepCookTime", "$totalIngredients", "$totalSteps"],
+        },
+      },
+    },
+    {
+      "$sort": 1,
+    },
+    // {
+    //   "$unset": ["to"]
+    // }
   ];
   if (limit && limit > 0) {
     return RecipeModel.aggregate(pipeLine)

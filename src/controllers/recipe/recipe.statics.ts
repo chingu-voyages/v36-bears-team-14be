@@ -82,7 +82,3 @@ export const findRecipesByContextLimitSkip = async ({
       throw new Error(`Invalid query context: ${context}`);
   }
 };
-
-// export const findLandingPageRecipes = async({ limit, skip}: { limit?: number, skip?: number}): Promise<TLandingPageQueryResults> => {
-
-// }

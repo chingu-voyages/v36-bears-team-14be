@@ -1,5 +1,10 @@
 import { RecipeModel } from "../../models/recipe/recipe.schema";
-import { IRecipe, IRecipeDocument } from "../../models/recipe/recipe.types";
+import {
+  IRecipe,
+  IRecipeDocument,
+  TRecipeIngredient,
+  TRecipeStep,
+} from "../../models/recipe/recipe.types";
 
 /**
  *  Batch creates some dummy recipes that we can use for testing
@@ -8,9 +13,17 @@ import { IRecipe, IRecipeDocument } from "../../models/recipe/recipe.types";
 export const createTestRecipes = async ({
   count,
   createdByUserId,
+  cookTimeMinutes,
+  prepTimeMinutes,
+  ingredients,
+  directions,
 }: {
   count: number;
   createdByUserId: string;
+  cookTimeMinutes?: number;
+  prepTimeMinutes?: number;
+  ingredients?: Array<TRecipeIngredient>;
+  directions?: Array<TRecipeStep>;
 }): Promise<IRecipeDocument[]> => {
   const dummyRecipes: IRecipe[] = [];
   for (let i = 0; i < count; i++) {
@@ -22,10 +35,10 @@ export const createTestRecipes = async ({
       images: [],
       createdAt: new Date(),
       updatedAt: new Date(),
-      ingredients: [],
-      directions: [],
-      cookTimeMinutes: 0,
-      prepTimeMinutes: 0,
+      ingredients: ingredients ?? [],
+      directions: directions ?? [],
+      cookTimeMinutes: cookTimeMinutes ?? 0,
+      prepTimeMinutes: prepTimeMinutes ?? 0,
     });
   }
   return RecipeModel.create(dummyRecipes);

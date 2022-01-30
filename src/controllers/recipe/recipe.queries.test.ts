@@ -110,5 +110,51 @@ describe("recipe queries", () => {
         queryResults3[0]._id.toString()
       );
     });
+    test("quick recipes tests - should retrieve and sort properly", async () => {
+      const testUsers = await createTestUsers({
+        count: 1,
+        plainTextPassword: "password",
+      });
+
+      await createTestRecipes({
+        createdByUserId: testUsers[0]._id.toString(),
+        count: 1,
+        prepTimeMinutes: 5,
+        cookTimeMinutes: 10,
+      });
+      await createTestRecipes({
+        createdByUserId: testUsers[0]._id.toString(),
+        count: 1,
+        prepTimeMinutes: 5,
+        cookTimeMinutes: 5,
+      });
+      await createTestRecipes({
+        createdByUserId: testUsers[0]._id.toString(),
+        count: 1,
+        prepTimeMinutes: 10,
+        cookTimeMinutes: 10,
+      });
+      const r3 = await createTestRecipes({
+        createdByUserId: testUsers[0]._id.toString(),
+        count: 1,
+        prepTimeMinutes: 0,
+        cookTimeMinutes: 5,
+      });
+      const r4 = await createTestRecipes({
+        createdByUserId: testUsers[0]._id.toString(),
+        count: 1,
+        prepTimeMinutes: 3,
+        cookTimeMinutes: 60,
+      });
+
+      const queryResults = await findRecipesByContextLimitSkip({
+        context: RecipeQueryContext.QuickRecipes,
+        limit: 5,
+      });
+
+      expect(queryResults[0]._id.toString()).toBe(r3[0]._id.toString());
+      expect(queryResults[4]._id.toString()).toBe(r4[0]._id.toString());
+      expect(queryResults.length).toBe(5);
+    });
   });
 });
