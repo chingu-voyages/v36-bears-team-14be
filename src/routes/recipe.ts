@@ -1,9 +1,13 @@
 import * as express from "express";
 import { protectedRoute } from "../middleware/protected-route";
-import { getRecipesLikeByUserId } from "./controllers/recipe/recipe.get.controller";
+import {
+  getRecipesLikeByUserId,
+  performRecipeQuery,
+} from "./controllers/recipe/recipe.get.controller";
 import { patchToggleLike } from "./controllers/recipe/recipe.patch.controller";
 import { postNewRecipe } from "./controllers/recipe/recipe.post.controller";
 import {
+  getRecipeQueryValidator,
   newRecipeBasicValidator,
   newRecipeDirectionsValidator,
   newRecipeIngredientsValidator,
@@ -32,10 +36,18 @@ router.patch(
 );
 
 router.get(
-  "/like/",
+  "/like",
   protectedRoute,
   validateLikeQueryParams(),
   validate,
   getRecipesLikeByUserId
+);
+
+router.get(
+  "/",
+  protectedRoute,
+  getRecipeQueryValidator(),
+  validate,
+  performRecipeQuery
 );
 export default router;

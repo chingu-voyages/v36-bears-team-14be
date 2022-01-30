@@ -1,5 +1,6 @@
 import { Response } from "express";
 import { RecipeModel } from "../../../models/recipe/recipe.schema";
+import { RecipeQueryContext } from "../../../models/recipe/recipe.types";
 import { IRequest } from "../../definitions";
 export const getRecipesLikeByUserId = async (req: IRequest, res: Response) => {
   const { userId } = req.query;
@@ -15,6 +16,25 @@ export const getRecipesLikeByUserId = async (req: IRequest, res: Response) => {
       });
       return res.status(200).send({ userId, likedRecipes });
     }
+  } catch (exception) {
+    return res.status(500).send({ error: exception.message });
+  }
+};
+
+export const performRecipeQuery = async (req: IRequest, res: Response) => {
+  const { limit, skip, context } = req.query;
+
+  const limitAsNumber = parseInt(limit as string);
+  const skipAsNumber = parseInt(skip as string);
+  const contextAsString = context as string as RecipeQueryContext;
+
+  try {
+    const results = await RecipeModel.findRecipesByContextLimitSkip({
+      context: contextAsString,
+      limit: limitAsNumber,
+      skip: skipAsNumber,
+    });
+    return res.status(200).send(results);
   } catch (exception) {
     return res.status(500).send({ error: exception.message });
   }

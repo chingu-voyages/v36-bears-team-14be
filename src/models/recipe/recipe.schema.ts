@@ -3,6 +3,7 @@ import { toggleLike } from "../../controllers/recipe/recipe.methods";
 import {
   createNewRecipe,
   findAllRecipesLikedByUser,
+  findRecipesByContextLimitSkip,
 } from "../../controllers/recipe/recipe.statics";
 import { IRecipe, IRecipeDocument, IRecipeModel } from "./recipe.types";
 interface SchemaOptionsWithPojoToMixed extends SchemaOptions {
@@ -56,6 +57,8 @@ const RecipeSchema = new Schema<IRecipe>(
 RecipeSchema.methods.toggleLike = toggleLike;
 RecipeSchema.statics.createNewRecipe = createNewRecipe;
 RecipeSchema.statics.findAllRecipesLikedByUser = findAllRecipesLikedByUser;
+RecipeSchema.statics.findRecipesByContextLimitSkip =
+  findRecipesByContextLimitSkip;
 export default RecipeSchema;
 
 export const RecipeModel = model<IRecipeDocument, IRecipeModel>(

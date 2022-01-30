@@ -40,6 +40,13 @@ export type TRecipeToggleLikeAction = {
   updatedRecipeDocument: IRecipeDocument;
 };
 
+export enum RecipeQueryContext {
+  PopularRecipes = "popularRecipes",
+  QuickRecipes = "quickRecipes",
+  SimpleRecipes = "simpleRecipes",
+  AllRecipes = "allRecipes",
+}
+
 export interface IRecipeDocument extends IRecipe, Document {
   toggleLike: (likedByUserId: string) => Promise<TRecipeToggleLikeAction>;
 }
@@ -57,5 +64,14 @@ export interface IRecipeModel extends Model<IRecipeDocument> {
     userId,
   }: {
     userId: string;
+  }) => Promise<IRecipeDocument[]>;
+  findRecipesByContextLimitSkip: ({
+    context,
+    skip,
+    limit,
+  }: {
+    context: RecipeQueryContext;
+    skip?: number;
+    limit?: number;
   }) => Promise<IRecipeDocument[]>;
 }

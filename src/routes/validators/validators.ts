@@ -6,7 +6,9 @@ import {
   query,
 } from "express-validator";
 import mongoose from "mongoose";
+import { RecipeQueryContext } from "../../models/recipe/recipe.types";
 import { UserModel } from "../../models/user/user.schema";
+
 export const validate = (req: any, res: any, next: any): any => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -161,5 +163,22 @@ export const validateLikeQueryParams = (): any[] => {
       })
       .trim()
       .escape(),
+  ];
+};
+
+export const getRecipeQueryValidator = (): any[] => {
+  return [
+    query("context")
+      .exists()
+      .custom((value: string) => {
+        return Object.values(RecipeQueryContext).includes(
+          value as RecipeQueryContext
+        );
+      })
+      .withMessage(
+        "The type of query (context) specified in the query parameters is invalid and/or not supported"
+      ),
+    query("limit").exists().isInt(),
+    query("skip").exists().isInt(),
   ];
 };

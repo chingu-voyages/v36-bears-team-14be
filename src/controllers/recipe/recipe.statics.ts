@@ -1,9 +1,17 @@
 import { RecipeModel } from "../../models/recipe/recipe.schema";
 import {
   IRecipeDocument,
+  RecipeQueryContext,
   TRecipeCreationData,
 } from "../../models/recipe/recipe.types";
 import { UserModel } from "../../models/user/user.schema";
+
+import {
+  getAllRecipes,
+  getPopularRecipes,
+  getQuickRecipes,
+  getSimpleRecipes,
+} from "./recipe.queries";
 
 export const createNewRecipe = async ({
   name,
@@ -49,4 +57,27 @@ export const findAllRecipesLikedByUser = async ({
     [`${mongoQuery}`]: { $exists: true },
   }).exec();
   return results;
+};
+
+export const findRecipesByContextLimitSkip = async ({
+  context,
+  skip,
+  limit,
+}: {
+  context: RecipeQueryContext;
+  skip?: number;
+  limit?: number;
+}): Promise<IRecipeDocument[]> => {
+  switch (context) {
+    case RecipeQueryContext.AllRecipes:
+      return getAllRecipes({ limit, skip });
+    case RecipeQueryContext.PopularRecipes:
+      return getPopularRecipes({ limit, skip });
+    case RecipeQueryContext.QuickRecipes:
+      return getQuickRecipes({ limit, skip });
+    case RecipeQueryContext.SimpleRecipes:
+      return getSimpleRecipes({ limit, skip });
+    default:
+      throw new Error(`Invalid query context: ${context}`);
+  }
 };
