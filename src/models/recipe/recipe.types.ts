@@ -48,11 +48,6 @@ export enum RecipeQueryContext {
   AllRecipes = "allRecipes",
 }
 
-export type TLandingPageQueryResults = {
-  [RecipeQueryContext.PopularRecipes]: IRecipeDocument[];
-  [RecipeQueryContext.QuickRecipes]: IRecipeDocument[];
-  [RecipeQueryContext.SimpleRecipes]: IRecipeDocument[];
-};
 export interface IRecipeDocument extends IRecipe, Document {
   toggleLike: (likedByUserId: string) => Promise<TRecipeToggleLikeAction>;
 }
