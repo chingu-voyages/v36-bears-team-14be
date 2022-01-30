@@ -2,7 +2,6 @@ import { RecipeModel } from "../../models/recipe/recipe.schema";
 import {
   IRecipeDocument,
   RecipeQueryContext,
-  //TLandingPageQueryResults,
   TRecipeCreationData,
 } from "../../models/recipe/recipe.types";
 import { UserModel } from "../../models/user/user.schema";
