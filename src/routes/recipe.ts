@@ -4,6 +4,7 @@ import { getRecipesLikeByUserId } from "./controllers/recipe/recipe.get.controll
 import { patchToggleLike } from "./controllers/recipe/recipe.patch.controller";
 import { postNewRecipe } from "./controllers/recipe/recipe.post.controller";
 import {
+  getRecipeQueryValidator,
   newRecipeBasicValidator,
   newRecipeDirectionsValidator,
   newRecipeIngredientsValidator,
@@ -32,10 +33,12 @@ router.patch(
 );
 
 router.get(
-  "/like/",
+  "/like",
   protectedRoute,
   validateLikeQueryParams(),
   validate,
   getRecipesLikeByUserId
 );
+
+router.get("/", protectedRoute, getRecipeQueryValidator(), validate);
 export default router;

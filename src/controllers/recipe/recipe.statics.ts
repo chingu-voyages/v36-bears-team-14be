@@ -1,9 +1,12 @@
 import { RecipeModel } from "../../models/recipe/recipe.schema";
 import {
   IRecipeDocument,
+  RecipeQueryContext,
   TRecipeCreationData,
 } from "../../models/recipe/recipe.types";
 import { UserModel } from "../../models/user/user.schema";
+
+import { getAllRecipes, getPopularRecipes } from "./recipe.queries";
 
 export const createNewRecipe = async ({
   name,
@@ -51,10 +54,21 @@ export const findAllRecipesLikedByUser = async ({
   return results;
 };
 
-export const findAllRecipesPaginated = async ({
+export const findRecipesByContextLimitSkip = async ({
+  context,
   skip,
   limit,
 }: {
+  context: RecipeQueryContext;
   skip?: number;
   limit?: number;
-}): Promise<void> => {};
+}): Promise<IRecipeDocument[]> => {
+  switch (context) {
+    case RecipeQueryContext.AllRecipes:
+      return getAllRecipes({ limit, skip });
+    case RecipeQueryContext.PopularRecipes:
+      return getPopularRecipes({ limit, skip });
+    default:
+      return [];
+  }
+};
