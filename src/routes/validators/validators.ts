@@ -182,3 +182,12 @@ export const getRecipeQueryValidator = (): any[] => {
     query("skip").exists().isInt(),
   ];
 };
+
+export const getAllUsersInvalidateQuery = (): any[] => {
+  return [
+    query().custom((value) => {
+      if (!value) return true;
+      return false;
+    }),
+  ];
+};
