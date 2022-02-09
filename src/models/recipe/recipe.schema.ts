@@ -5,6 +5,7 @@ import {
   deleteRecipeById,
   findAllRecipesLikedByUser,
   findRecipesByContextLimitSkip,
+  findAllRecipesByUserId,
   getRecipeById,
 } from "../../controllers/recipe/recipe.statics";
 import { IRecipe, IRecipeDocument, IRecipeModel } from "./recipe.types";
@@ -63,6 +64,7 @@ RecipeSchema.statics.findRecipesByContextLimitSkip =
   findRecipesByContextLimitSkip;
 RecipeSchema.statics.getRecipeById = getRecipeById;
 RecipeSchema.statics.deleteRecipeById = deleteRecipeById;
+RecipeSchema.statics.findAllRecipesByUserId = findAllRecipesByUserId;
 export default RecipeSchema;
 
 export const RecipeModel = model<IRecipeDocument, IRecipeModel>(

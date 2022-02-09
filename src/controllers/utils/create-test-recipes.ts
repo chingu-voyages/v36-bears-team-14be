@@ -5,6 +5,8 @@ import {
   TRecipeIngredient,
   TRecipeStep,
 } from "../../models/recipe/recipe.types";
+import { UserModel } from "../../models/user/user.schema";
+import { TSecureUser } from "../../models/user/user.types";
 
 /**
  *  Batch creates some dummy recipes that we can use for testing
@@ -41,5 +43,30 @@ export const createTestRecipes = async ({
       prepTimeMinutes: prepTimeMinutes ?? 0,
     });
   }
-  return RecipeModel.create(dummyRecipes);
+  const testRecipes = await RecipeModel.create(dummyRecipes);
+  await updateTestUsersWithTestRecipes({
+    userId: createdByUserId,
+    testRecipes,
+  });
+  return testRecipes;
+};
+
+const updateTestUsersWithTestRecipes = async ({
+  userId,
+  testRecipes,
+}: {
+  userId: string;
+  testRecipes: IRecipeDocument[];
+}): Promise<TSecureUser> => {
+  const user = await UserModel.findById(userId);
+  if (!user) throw new Error("Can't find user");
+
+  const userRecipeObject: any = {};
+  testRecipes.forEach((recipe) => {
+    userRecipeObject[`${recipe._id.toString()}`] = new Date();
+  });
+  user.recipes = userRecipeObject;
+  user.markModified("recipes");
+  await user.save();
+  return user;
 };

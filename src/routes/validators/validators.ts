@@ -8,6 +8,7 @@ import {
 import mongoose from "mongoose";
 import { RecipeQueryContext } from "../../models/recipe/recipe.types";
 import { UserModel } from "../../models/user/user.schema";
+import { isURLValid } from "../../utils/url-valid";
 
 export const validate = (req: any, res: any, next: any): any => {
   const errors = validationResult(req);
@@ -121,26 +122,73 @@ export const toggleLikeParamIdValidator = (): any[] => {
 };
 
 export const patchUserValidator = (): any[] => {
+  const validateActionOptions = (value: any) => {
+    if (!value) return true;
+    if (value !== "delete" && value !== "update") return false;
+    return true;
+  };
   return [
     checkSchema({
-      favoriteFoods: {
-        isArray: true,
-        exists: true,
-        errorMessage: "`favoriteFoods` must exist and must be an array.",
-        isLength: {
-          options: { min: 0 },
+      "favoriteFoods.action": {
+        errorMessage: "The value for action should be `delete` or `update`",
+        custom: {
+          options: validateActionOptions,
         },
       },
-      photoUrl: {
-        isString: true,
-        isURL: true,
-        exists: true,
-        errorMessage: "`photoUrl` must exist.",
+      "favoriteFoods.data": {
+        errorMessage: "The value for data should exist and be an array.",
+        custom: {
+          options: (value, { req }) => {
+            if (
+              req.body.favoriteFoods &&
+              req.body.favoriteFoods.action === "update"
+            ) {
+              if (!Array.isArray(value)) return false;
+              if (value.length && value.length === 0) return false;
+            }
+            return true;
+          },
+        },
       },
-      bio: {
-        isString: true,
-        exists: true,
-        errorMessage: "`bio` must exist.",
+      "photoUrl.action": {
+        errorMessage: "The value for action should be `delete` or `update`",
+        custom: {
+          options: validateActionOptions,
+        },
+      },
+      "photoUrl.data": {
+        errorMessage:
+          "The value for data should exist and be in a URL format, pointing to some resource. If you want to delete photoUrl data, use the `delete` action",
+        custom: {
+          options: (value, { req }) => {
+            if (req.body.photoUrl && req.body.photoUrl.action === "update") {
+              if (!value) return false;
+              if (!isURLValid(value)) return false;
+              return true;
+            }
+            return true;
+          },
+        },
+      },
+      "bio.action": {
+        errorMessage: "The value for action should be `delete` or `update`",
+        custom: {
+          options: validateActionOptions,
+        },
+      },
+      "bio.data": {
+        errorMessage:
+          "The value for data should exist and be a non-empty string. If you want to delete bio data, use the `delete` action",
+        custom: {
+          options: (value, { req }) => {
+            if (req.body.bio && req.body.bio.action === "update") {
+              if (!value) return false;
+              if (value.length && value.trim().length === 0) return false;
+              return true;
+            }
+            return true;
+          },
+        },
       },
     }),
   ];

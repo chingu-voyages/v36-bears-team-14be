@@ -22,7 +22,10 @@ export const passportLocalAuthenticate = async (
     req.logIn(user, () => {
       res
         .status(200)
-        .send({ message: "Local authentication successful", id: user._id });
+        .send({
+          message: "Local authentication successful",
+          user: adaptUserToSecure(user),
+        });
     });
   })(req, res, next);
 };
