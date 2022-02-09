@@ -14,7 +14,7 @@ const router = express.Router();
 
 router.get(
   "/:id",
-  protectedRoute,
+  //protectedRoute,
   getParamIdValidator(),
   validate,
   getUserByIdMe,

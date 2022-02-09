@@ -3,6 +3,7 @@ import {
   IUserDocument,
   IUserRegistrationDetails,
   TSecureUser,
+  TUserPatchReturnData,
 } from "../../models/user/user.types";
 import { hashPassword } from "../../utils/crypto";
 
@@ -57,22 +58,56 @@ export async function patchUserByIdSecure({
   photoUrl,
 }: {
   id: string;
-  bio?: string;
-  favoriteFoods?: Array<string>;
-  photoUrl?: string;
-}): Promise<TSecureUser> {
+  bio?: {
+    action: "update" | "delete";
+    data?: string;
+  };
+  favoriteFoods?: {
+    action: "update" | "delete";
+    data?: Array<string>;
+  };
+  photoUrl?: {
+    action: "update" | "delete";
+    data?: string;
+  };
+}): Promise<TUserPatchReturnData> {
+  const profileDataUpdated: string[] = [];
+
   const user = await UserModel.findById(id);
-  if (bio) {
-    user.bio = bio;
+
+  if (bio && bio.action) {
+    if (bio.action === "update") {
+      user.bio = bio.data;
+      profileDataUpdated.push("bio updated with data");
+    } else if (bio.action === "delete") {
+      user.bio = "";
+      profileDataUpdated.push("bio deleted");
+    }
   }
-  if (favoriteFoods) {
-    user.favoriteFoods = favoriteFoods;
+  if (favoriteFoods && favoriteFoods.action) {
+    if (favoriteFoods.action === "update") {
+      user.favoriteFoods = favoriteFoods.data;
+      profileDataUpdated.push("favorite foods updated with data");
+    } else if (favoriteFoods.action === "delete") {
+      user.favoriteFoods = [];
+      profileDataUpdated.push("favorite foods deleted");
+    }
   }
-  if (photoUrl) {
-    user.photoUrl = photoUrl;
+  if (photoUrl && photoUrl.action) {
+    if (photoUrl.action === "update") {
+      user.photoUrl = photoUrl.data;
+      profileDataUpdated.push("photoUrl updated with data");
+    } else if (favoriteFoods.action === "delete") {
+      user.photoUrl = "";
+      profileDataUpdated.push("photoUrl deleted");
+    }
   }
-  await user.save();
-  return adaptUserToSecure(user);
+  if (profileDataUpdated.length > 0) {
+    await user.save();
+  } else {
+    throw new Error("No data was updated in this operation");
+  }
+  return { user: adaptUserToSecure(user), profileDataUpdated };
 }
 /**
  *
@@ -80,8 +115,10 @@ export async function patchUserByIdSecure({
  * @returns TSecure user - user without sensitive info like password and e-mail address
  */
 export function adaptUserToSecure(user: IUserDocument): TSecureUser {
+  if (!user)
+    throw new Error("User isn't defined - unable to adapt secure user");
   return {
-    _id: user.id,
+    _id: user._id,
     firstName: user.firstName,
     lastName: user.lastName,
     bio: user.bio,

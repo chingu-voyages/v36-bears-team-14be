@@ -12,6 +12,7 @@ export const getUserById = async (req: IRequest, res: Response) => {
       return res.status(404).send({ error: `User with id ${id} not found` });
     }
   } catch (exception) {
+    console.log("16", exception);
     return res.status(500).send({ error: exception.message });
   }
 };

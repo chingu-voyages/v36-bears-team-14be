@@ -32,6 +32,10 @@ export type TSecureUser = Pick<
   | "photoUrl"
 >;
 
+export type TUserPatchReturnData = {
+  profileDataUpdated: string[];
+  user: TSecureUser;
+};
 export interface IUserDocument extends IUser, Document {}
 export interface IUserModel extends Model<IUserDocument> {
   findOneByEmail: ({ email }: { email: string }) => Promise<IUserDocument>;
@@ -58,5 +62,5 @@ export interface IUserModel extends Model<IUserDocument> {
     bio?: string;
     favoriteFoods?: Array<string>;
     photoUrl?: string;
-  }) => Promise<TSecureUser>;
+  }) => Promise<TUserPatchReturnData>;
 }

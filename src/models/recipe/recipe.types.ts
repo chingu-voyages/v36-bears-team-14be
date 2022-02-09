@@ -46,6 +46,7 @@ export enum RecipeQueryContext {
   QuickRecipes = "quickRecipes",
   SimpleRecipes = "simpleRecipes",
   AllRecipes = "allRecipes",
+  FromUser = "fromUser",
 }
 
 export type TDeleteRecipeByIdResult = {
@@ -88,4 +89,9 @@ export interface IRecipeModel extends Model<IRecipeDocument> {
     userId: string;
     recipeId: string;
   }) => Promise<IRecipeModel[]>;
+  findAllRecipesByUserId: ({
+    id,
+  }: {
+    id: string;
+  }) => Promise<IRecipeDocument[]>;
 }

@@ -4,10 +4,15 @@ import { IRequest } from "../../definitions";
 
 export const patchUserByIdMe = async (req: IRequest, res: Response) => {
   if (req.params.id !== "me") {
-    return res
-      .status(400)
-      .send({ error: "User does not have permission to update profile." });
+    if (req.params.id !== req.user.id) {
+      return res
+        .status(400)
+        .send({
+          error: "Requestor does not have permission to update profile.",
+        });
+    }
   }
+
   try {
     const { id } = req.user;
     const { bio, photoUrl, favoriteFoods } = req.body;

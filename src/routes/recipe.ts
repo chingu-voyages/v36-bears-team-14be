@@ -48,21 +48,9 @@ router.get(
   getRecipesLikeByUserId
 );
 
-router.get(
-  "/",
-  protectedRoute,
-  getRecipeQueryValidator(),
-  validate,
-  performRecipeQuery
-);
+router.get("/", getRecipeQueryValidator(), validate, performRecipeQuery);
 
-router.get(
-  "/:id",
-  protectedRoute,
-  getParamIdValidator(),
-  validate,
-  getRecipeById
-);
+router.get("/:id", getParamIdValidator(), validate, getRecipeById);
 
 router.delete(
   "/:id",

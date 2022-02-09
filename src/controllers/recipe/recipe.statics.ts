@@ -62,10 +62,12 @@ export const findAllRecipesLikedByUser = async ({
 
 export const findRecipesByContextLimitSkip = async ({
   context,
+  userId,
   skip,
   limit,
 }: {
   context: RecipeQueryContext;
+  userId?: string;
   skip?: number;
   limit?: number;
 }): Promise<IRecipeDocument[]> => {
@@ -119,4 +121,21 @@ export const getAllRecipesByUser = async ({
 }): Promise<IRecipeDocument[]> => {
   const recipes = await RecipeModel.where({ "postedBy": userId });
   return recipes;
+};
+
+export const findAllRecipesByUserId = async ({
+  id,
+}: {
+  id: string;
+}): Promise<IRecipeDocument[]> => {
+  const user = await UserModel.findById(id);
+  if (!user) throw new Error(`User with id ${id} not found`);
+  if (!user.recipes) return [];
+  const arrayOfRecipeIds = Object.keys(user.recipes);
+  if (arrayOfRecipeIds.length === 0) return [];
+
+  const foundRecipes = await Promise.all(
+    arrayOfRecipeIds.map((recipeId) => RecipeModel.findById(recipeId))
+  );
+  return foundRecipes;
 };
