@@ -22,6 +22,7 @@ export const createNewRecipe = async ({
   directions,
   cookTimeMinutes,
   prepTimeMinutes,
+  imageUrl,
 }: TRecipeCreationData): Promise<IRecipeDocument> => {
   const recipe = {
     name,
@@ -31,6 +32,7 @@ export const createNewRecipe = async ({
     directions,
     cookTimeMinutes,
     prepTimeMinutes,
+    images: imageUrl ? [{ url: imageUrl }] : [],
   };
   const newRecipe = await RecipeModel.create(recipe);
   await updateUserWithNewRecipe({ newRecipe });
@@ -108,34 +110,17 @@ export const deleteRecipeById = async ({
     delete user.recipes[recipe._id];
     user.markModified("recipes");
     await user.save();
-    const userRecipes = await getAllRecipesByUser({ userId });
+    const userRecipes = await getAllRecipesForUserByUserId({ userId });
     return { user, recipes: userRecipes };
   } else {
     throw new Error("You can only delete your own recipes");
   }
 };
-export const getAllRecipesByUser = async ({
+export const getAllRecipesForUserByUserId = async ({
   userId,
 }: {
   userId: string;
 }): Promise<IRecipeDocument[]> => {
   const recipes = await RecipeModel.where({ "postedBy": userId });
   return recipes;
-};
-
-export const findAllRecipesByUserId = async ({
-  id,
-}: {
-  id: string;
-}): Promise<IRecipeDocument[]> => {
-  const user = await UserModel.findById(id);
-  if (!user) throw new Error(`User with id ${id} not found`);
-  if (!user.recipes) return [];
-  const arrayOfRecipeIds = Object.keys(user.recipes);
-  if (arrayOfRecipeIds.length === 0) return [];
-
-  const foundRecipes = await Promise.all(
-    arrayOfRecipeIds.map((recipeId) => RecipeModel.findById(recipeId))
-  );
-  return foundRecipes;
 };
