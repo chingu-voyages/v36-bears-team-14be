@@ -34,7 +34,9 @@ export type TRecipeCreationData = Pick<
   | "directions"
   | "cookTimeMinutes"
   | "prepTimeMinutes"
->;
+> & {
+  imageUrl?: string;
+};
 
 export type TRecipeToggleLikeAction = {
   actionTaken: "like" | "unlike";
@@ -89,9 +91,9 @@ export interface IRecipeModel extends Model<IRecipeDocument> {
     userId: string;
     recipeId: string;
   }) => Promise<IRecipeModel[]>;
-  findAllRecipesByUserId: ({
-    id,
+  getAllRecipesForUserByUserId: ({
+    userId,
   }: {
-    id: string;
+    userId: string;
   }) => Promise<IRecipeDocument[]>;
 }
