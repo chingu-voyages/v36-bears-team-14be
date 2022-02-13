@@ -2,6 +2,7 @@ import * as express from "express";
 import { protectedRoute } from "../middleware/protected-route";
 import { patchUserByIdMe } from "./controllers/user/user.patch.controller";
 import {
+  getAllRecipesByUser,
   getUserById,
   getUserByIdMe,
 } from "./controllers/user/user.get.controller";
@@ -12,13 +13,13 @@ import {
 } from "./validators";
 const router = express.Router();
 
+router.get("/:id", getParamIdValidator(), validate, getUserByIdMe, getUserById);
+
 router.get(
-  "/:id",
-  //protectedRoute,
+  "/:id/recipes",
   getParamIdValidator(),
   validate,
-  getUserByIdMe,
-  getUserById
+  getAllRecipesByUser
 );
 router.patch(
   "/:id",
