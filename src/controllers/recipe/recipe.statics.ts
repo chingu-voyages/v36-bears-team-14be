@@ -92,29 +92,39 @@ export async function getRecipeById(id: string): Promise<IRecipeDocument> {
 }
 export const deleteRecipeById = async ({
   userId,
-  recipeId,
+  recipeIds,
 }: {
   userId: string;
-  recipeId: string;
+  recipeIds: string[];
 }): Promise<TDeleteRecipeByIdResult> => {
-  const recipe = await RecipeModel.findById(recipeId);
+  // const recipe = await RecipeModel.findById(recipeId);
   const user = await UserModel.findById(userId);
   if (!user) {
     throw new Error("Could not find the user");
   }
-  if (!recipe) {
-    throw new Error("Could not find the recipe");
+  const foundRecipes = await RecipeModel.find({
+    "$and": [{ "postedBy": userId }, { "_id": { "$in": recipeIds } }],
+  });
+
+  if (foundRecipes && foundRecipes.length !== recipeIds.length) {
+    console.warn(" 126 Delete request seems fishy as the lengths don't match");
   }
-  if (recipe.postedBy === userId) {
-    await recipe.delete();
-    delete user.recipes[recipe._id];
-    user.markModified("recipes");
-    await user.save();
-    const userRecipes = await getAllRecipesForUserByUserId({ userId });
-    return { user, recipes: userRecipes };
-  } else {
-    throw new Error("You can only delete your own recipes");
+
+  if (foundRecipes && foundRecipes.length > 0) {
+    const idsToDelete = foundRecipes.map((r) => r._id.toString());
+    await RecipeModel.deleteMany({
+      "_id": { "$in": idsToDelete },
+    });
   }
+
+  recipeIds.forEach((id) => {
+    delete user.recipes[id];
+  });
+  user.markModified("recipes");
+  await user.save();
+
+  const userRecipes = await getAllRecipesForUserByUserId({ userId });
+  return { user, recipes: userRecipes };
 };
 export const getAllRecipesForUserByUserId = async ({
   userId,

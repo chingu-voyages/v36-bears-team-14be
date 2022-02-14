@@ -86,11 +86,11 @@ export interface IRecipeModel extends Model<IRecipeDocument> {
   getRecipeById: (id: string) => Promise<IRecipeDocument>;
   deleteRecipeById: ({
     userId,
-    recipeId,
+    recipeIds,
   }: {
     userId: string;
-    recipeId: string;
-  }) => Promise<IRecipeModel[]>;
+    recipeIds: string[];
+  }) => Promise<TDeleteRecipeByIdResult>;
   getAllRecipesForUserByUserId: ({
     userId,
   }: {

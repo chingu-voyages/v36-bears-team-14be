@@ -39,6 +39,28 @@ export const getUserByIdMe = async (
 
 export const getAllRecipesByUser = async (req: IRequest, res: Response) => {
   const { id } = req.params;
+  if (id === "me") {
+    if (req.user && req.user.id) {
+      try {
+        const recipes = await RecipeModel.getAllRecipesForUserByUserId({
+          userId: req.user.id,
+        });
+        return res.status(200).send(recipes);
+      } catch (exception) {
+        return res
+          .status(500)
+          .send({
+            error: `Unable to fetch all recipes by authenticated user me`,
+          });
+      }
+    } else {
+      return res
+        .status(401)
+        .send({
+          error: `fetching recipes for user me, but requesting user is not authenticated`,
+        });
+    }
+  }
   try {
     const recipes = await RecipeModel.getAllRecipesForUserByUserId({
       userId: id,

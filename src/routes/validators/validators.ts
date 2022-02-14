@@ -260,3 +260,15 @@ export const getAllUsersInvalidateQuery = (): any[] => {
     }),
   ];
 };
+
+export const deleteRecipeByIdsValidator = (): any[] => {
+  return [
+    body("recipeIds")
+      .exists()
+      .isArray()
+      .notEmpty()
+      .withMessage(
+        "Delete request must contain an array of recipe Ids. It cannot be empty or null"
+      ),
+  ];
+};
