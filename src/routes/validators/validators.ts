@@ -55,7 +55,28 @@ export const newRecipeDirectionsValidator = (): any[] => {
       "directions.*.imageUrl": {
         optional: { options: { nullable: true } },
         errorMessage: `Incorrect formatting or data for URL`,
-        isURL: true,
+        custom: {
+          options: (value) => {
+            if (value === "") return true;
+            if (isURLValid(value)) {
+              return true;
+            }
+            return false;
+          },
+        },
+      },
+      imageUrl: {
+        optional: { options: { nullable: true } },
+        errorMessage: `Incorrect formatting or data for image URL`,
+        custom: {
+          options: (value) => {
+            if (value === "") return true;
+            if (isURLValid(value)) {
+              return true;
+            }
+            return false;
+          },
+        },
       },
     }),
   ];
@@ -237,5 +258,17 @@ export const getAllUsersInvalidateQuery = (): any[] => {
       if (!value) return true;
       return false;
     }),
+  ];
+};
+
+export const deleteRecipeByIdsValidator = (): any[] => {
+  return [
+    body("recipeIds")
+      .exists()
+      .isArray()
+      .notEmpty()
+      .withMessage(
+        "Delete request must contain an array of recipe Ids. It cannot be empty or null"
+      ),
   ];
 };

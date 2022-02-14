@@ -92,21 +92,3 @@ describe("recipe find recipes liked by user tests", () => {
     ).toBe(true);
   });
 });
-
-describe("query -> get all recipes by some user", () => {
-  test("gets all recipes by userId", async () => {
-    const testUsers = await createTestUsers({
-      count: 1,
-      plainTextPassword: "password",
-    });
-    await createTestRecipes({
-      count: 7,
-      createdByUserId: testUsers[0]._id.toString(),
-    });
-
-    const results = await RecipeModel.findAllRecipesByUserId({
-      id: testUsers[0]._id.toString(),
-    });
-    expect(results.length).toBe(7);
-  });
-});

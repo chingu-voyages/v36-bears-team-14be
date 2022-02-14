@@ -10,6 +10,7 @@ export const postNewRecipe = async (req: IRequest, res: Response) => {
     directions,
     cookTimeMinutes,
     prepTimeMinutes,
+    imageUrl,
   } = req.body;
   try {
     const result = await RecipeModel.createNewRecipe({
@@ -20,6 +21,7 @@ export const postNewRecipe = async (req: IRequest, res: Response) => {
       directions,
       cookTimeMinutes,
       prepTimeMinutes,
+      imageUrl,
     });
     res.status(200).send(result);
   } catch (err) {

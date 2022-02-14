@@ -1,15 +1,15 @@
-import * as express from "express";
-import { Response } from "express";
+import express, { Response } from "express";
 import { protectedRoute } from "../middleware/protected-route";
+import { RecipeModel } from "../models/recipe/recipe.schema";
 import {
   getRecipesLikeByUserId,
   performRecipeQuery,
   getRecipeById,
 } from "./controllers/recipe/recipe.get.controller";
-import { RecipeModel } from "../models/recipe/recipe.schema";
 import { patchToggleLike } from "./controllers/recipe/recipe.patch.controller";
 import { postNewRecipe } from "./controllers/recipe/recipe.post.controller";
 import { IRequest } from "./definitions";
+
 import {
   getRecipeQueryValidator,
   getParamIdValidator,
@@ -19,7 +19,9 @@ import {
   toggleLikeParamIdValidator,
   validate,
   validateLikeQueryParams,
+  deleteRecipeByIdsValidator,
 } from "./validators";
+
 const router = express.Router();
 
 router.post(
@@ -53,17 +55,18 @@ router.get("/", getRecipeQueryValidator(), validate, performRecipeQuery);
 router.get("/:id", getParamIdValidator(), validate, getRecipeById);
 
 router.delete(
-  "/:id",
+  "/",
   protectedRoute,
-  getParamIdValidator(),
+  deleteRecipeByIdsValidator(),
   validate,
   (req: IRequest, res: Response) => {
+    const { recipeIds } = req.body;
     RecipeModel.deleteRecipeById({
-      recipeId: req.params.id,
+      recipeIds,
       userId: req.user.id,
     })
       .then((recipeData) => {
-        res.status(200).send(recipeData);
+        res.status(200).send(recipeData.recipes);
       })
       .catch((err) => res.status(400).send({ error: err.message }));
   }
