@@ -5,7 +5,7 @@
   "scripts": {
     "tsc": "tsc",
     "build": "npm run tsc",
-    "start": "node dist/src/server.js",
+    "start": "node dist/server.js",
     "watch-tsc": "tsc -w",
     "dev": "NODE_ENV=development nodemon",
     "test": "NODE_ENV=test npx jest",
