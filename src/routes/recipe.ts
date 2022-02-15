@@ -1,5 +1,6 @@
 import express, { Response } from "express";
 import { protectedRoute } from "../middleware/protected-route";
+import { validateAPIToken } from "../middleware/verify-api-token";
 import { RecipeModel } from "../models/recipe/recipe.schema";
 import {
   getRecipesLikeByUserId,
@@ -26,6 +27,7 @@ const router = express.Router();
 
 router.post(
   "/",
+  validateAPIToken,
   protectedRoute,
   newRecipeBasicValidator(),
   newRecipeIngredientsValidator(),
@@ -36,6 +38,7 @@ router.post(
 
 router.patch(
   "/:id/like",
+  validateAPIToken,
   protectedRoute,
   toggleLikeParamIdValidator(),
   validate,
@@ -44,18 +47,32 @@ router.patch(
 
 router.get(
   "/like",
+  validateAPIToken,
   protectedRoute,
   validateLikeQueryParams(),
   validate,
   getRecipesLikeByUserId
 );
 
-router.get("/", getRecipeQueryValidator(), validate, performRecipeQuery);
+router.get(
+  "/",
+  validateAPIToken,
+  getRecipeQueryValidator(),
+  validate,
+  performRecipeQuery
+);
 
-router.get("/:id", getParamIdValidator(), validate, getRecipeById);
+router.get(
+  "/:id",
+  validateAPIToken,
+  getParamIdValidator(),
+  validate,
+  getRecipeById
+);
 
 router.delete(
   "/",
+  validateAPIToken,
   protectedRoute,
   deleteRecipeByIdsValidator(),
   validate,

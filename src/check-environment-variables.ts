@@ -21,10 +21,15 @@ export const checkEnvironmentVariables = () => {
       process.env.PRODUCTION_MONGO_URI,
       "missing env: PRODUCTION_MONGO_URI"
     );
+    assert(
+      process.env.PRODUCTION_API_TOKEN,
+      "missing env: PRODUCTION_API_TOKEN"
+    );
   } else {
     assert(process.env.DEV_COOKIE_DOMAIN, "missing env: DEV_COOKIE_DOMAIN");
     assert(process.env.DEV_COOKIE1, "missing env: DEV_COOKIE1");
     assert(process.env.DEV_COOKIE2, "missing env: DEV_COOKIE2");
     assert(process.env.DEV_MONGO_URI, "missing env: DEV_MONGO_URI");
+    assert(process.env.DEV_API_TOKEN, "missing env: DEV_API_TOKEN");
   }
 };

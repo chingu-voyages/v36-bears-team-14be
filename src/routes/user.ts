@@ -11,12 +11,14 @@ import {
   patchUserValidator,
   validate,
 } from "./validators";
+import { validateAPIToken } from "../middleware/verify-api-token";
 const router = express.Router();
 
 router.get("/:id", getParamIdValidator(), validate, getUserByIdMe, getUserById);
 
 router.get(
   "/:id/recipes",
+  validateAPIToken,
   getParamIdValidator(),
   validate,
   getAllRecipesByUser
@@ -24,6 +26,7 @@ router.get(
 
 router.patch(
   "/:id",
+  validateAPIToken,
   protectedRoute,
   getParamIdValidator(),
   patchUserValidator(),
