@@ -37,10 +37,10 @@ export const createTestRecipes = async ({
       images: [],
       createdAt: new Date(),
       updatedAt: new Date(),
-      ingredients: ingredients ?? [],
-      directions: directions ?? [],
-      cookTimeMinutes: cookTimeMinutes ?? 0,
-      prepTimeMinutes: prepTimeMinutes ?? 0,
+      ingredients: ingredients ? ingredients : [],
+      directions: directions ? directions : [],
+      cookTimeMinutes: cookTimeMinutes ? cookTimeMinutes : 0,
+      prepTimeMinutes: prepTimeMinutes ? prepTimeMinutes : 0,
     });
   }
   const testRecipes = await RecipeModel.create(dummyRecipes);

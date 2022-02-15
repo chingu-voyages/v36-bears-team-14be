@@ -10,8 +10,8 @@ export const getAllRecipes = async ({
 }): Promise<IRecipeDocument[]> => {
   return RecipeModel.find()
     .sort({ updatedAt: 1, _id: 1 })
-    .skip(skip ?? 0)
-    .limit(limit ?? 0);
+    .skip(skip ? skip : 0)
+    .limit(limit ? limit : 0);
 };
 
 export const getPopularRecipes = async ({
@@ -43,11 +43,11 @@ export const getPopularRecipes = async ({
   ];
   if (limit && limit > 0) {
     return RecipeModel.aggregate(pipeLine)
-      .skip(skip ?? 0)
+      .skip(skip ? skip : 0)
       .limit(limit);
   }
 
-  return RecipeModel.aggregate(pipeLine).skip(skip ?? 0);
+  return RecipeModel.aggregate(pipeLine).skip(skip ? skip : 0);
 };
 
 export const getQuickRecipes = async ({
@@ -77,11 +77,11 @@ export const getQuickRecipes = async ({
   ];
   if (limit && limit > 0) {
     return RecipeModel.aggregate(pipeLine)
-      .skip(skip ?? 0)
+      .skip(skip ? skip : 0)
       .limit(limit);
   }
 
-  return RecipeModel.aggregate(pipeLine).skip(skip ?? 0);
+  return RecipeModel.aggregate(pipeLine).skip(skip ? skip : 0);
 };
 
 export const getSimpleRecipes = async ({
@@ -139,9 +139,9 @@ export const getSimpleRecipes = async ({
   ];
   if (limit && limit > 0) {
     return RecipeModel.aggregate(pipeLine)
-      .skip(skip ?? 0)
+      .skip(skip ? skip : 0)
       .limit(limit);
   }
 
-  return RecipeModel.aggregate(pipeLine).skip(skip ?? 0);
+  return RecipeModel.aggregate(pipeLine).skip(skip ? skip : 0);
 };
