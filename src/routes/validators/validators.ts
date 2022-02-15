@@ -26,8 +26,8 @@ export const loginAuthenticationValidator = (): any[] => {
 };
 export const newRecipeBasicValidator = (): any[] => {
   return [
-    body("name").not().isEmpty().trim().escape(),
-    body("description").not().isEmpty().trim().escape(),
+    body("name").not().isEmpty().trim(),
+    body("description").not().isEmpty().trim(),
     body("cookTimeMinutes").isNumeric().exists(),
     body("prepTimeMinutes").isNumeric().exists(),
   ];
