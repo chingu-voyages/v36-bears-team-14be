@@ -3,6 +3,7 @@ const router = express.Router();
 import passport from "passport";
 import LocalPassportStrategy from "../authentication-strategies/local/local-authentication-strategy";
 import { endExistingSession } from "../middleware/end-existing-session";
+import { validateAPIToken } from "../middleware/verify-api-token";
 
 import { determineIfSessionIsActive } from "./controllers/authentication/authentication.get.controller";
 import {
@@ -19,6 +20,7 @@ passport.use("local", LocalPassportStrategy);
 
 router.post(
   "/local",
+  validateAPIToken,
   endExistingSession,
   loginAuthenticationValidator(),
   validate,
@@ -26,6 +28,7 @@ router.post(
 );
 router.post(
   "/local/register",
+  validateAPIToken,
   registerNewUserValidator(),
   validate,
   registerNewLocalUser
