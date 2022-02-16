@@ -13,8 +13,9 @@ import {
   IS_PRODUCTION,
 } from "./check-environment-variables";
 const cookieSession = require("cookie-session");
+const cookieParser = require("cookie-parser");
 const app = express();
-
+app.use(cookieParser());
 checkEnvironmentVariables();
 
 const DOMAIN = IS_PRODUCTION
