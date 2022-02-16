@@ -50,6 +50,7 @@ app.use(
     : cookieSession(cookieOptions)
 );
 
+console.log("cookie domain is", DOMAIN);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(passport.initialize());
