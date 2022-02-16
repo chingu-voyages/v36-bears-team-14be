@@ -21,6 +21,9 @@ const DOMAIN = IS_PRODUCTION
   ? process.env.PRODUCTION_COOKIE_DOMAIN
   : process.env.DEV_COOKIE_DOMAIN;
 
+if (IS_PRODUCTION) {
+  app.set("trust proxy", 1);
+}
 console.log("Production mode?", IS_PRODUCTION);
 app.use(
   cors({
