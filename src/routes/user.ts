@@ -14,7 +14,14 @@ import {
 import { validateAPIToken } from "../middleware/verify-api-token";
 const router = express.Router();
 
-router.get("/:id", getParamIdValidator(), validate, getUserByIdMe, getUserById);
+router.get(
+  "/:id",
+  validateAPIToken,
+  getParamIdValidator(),
+  validate,
+  getUserByIdMe,
+  getUserById
+);
 
 router.get(
   "/:id/recipes",
