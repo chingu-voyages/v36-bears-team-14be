@@ -38,6 +38,17 @@ export type TRecipeCreationData = Pick<
   imageUrl?: string;
 };
 
+export type TRecipePatchPayloadData = Pick<
+  TRecipeCreationData,
+  | "name"
+  | "description"
+  | "ingredients"
+  | "directions"
+  | "cookTimeMinutes"
+  | "prepTimeMinutes"
+  | "imageUrl"
+>;
+
 export type TRecipeToggleLikeAction = {
   actionTaken: "like" | "unlike";
   updatedRecipeDocument: IRecipeDocument;
@@ -57,6 +68,13 @@ export type TDeleteRecipeByIdResult = {
 };
 export interface IRecipeDocument extends IRecipe, Document {
   toggleLike: (likedByUserId: string) => Promise<TRecipeToggleLikeAction>;
+  patchUpdate: ({
+    requestorId,
+    payload,
+  }: {
+    requestorId: string;
+    payload: TRecipePatchPayloadData;
+  }) => Promise<IRecipeDocument>;
 }
 export interface IRecipeModel extends Model<IRecipeDocument> {
   createNewRecipe: ({

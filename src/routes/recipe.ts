@@ -7,7 +7,10 @@ import {
   performRecipeQuery,
   getRecipeById,
 } from "./controllers/recipe/recipe.get.controller";
-import { patchToggleLike } from "./controllers/recipe/recipe.patch.controller";
+import {
+  patchToggleLike,
+  patchUpdateRecipeById,
+} from "./controllers/recipe/recipe.patch.controller";
 import { postNewRecipe } from "./controllers/recipe/recipe.post.controller";
 import { IRequest } from "./definitions";
 
@@ -89,4 +92,15 @@ router.delete(
   }
 );
 
+router.patch(
+  "/:id/update",
+  validateAPIToken,
+  protectedRoute,
+  getParamIdValidator(),
+  newRecipeBasicValidator(),
+  newRecipeDirectionsValidator(),
+  newRecipeIngredientsValidator(),
+  validate,
+  patchUpdateRecipeById
+);
 export default router;
