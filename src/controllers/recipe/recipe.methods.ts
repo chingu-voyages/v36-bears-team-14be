@@ -46,8 +46,11 @@ export async function patchUpdate(
   this.ingredients = payload.ingredients;
   this.directions = payload.directions;
 
-  if (payload.imageUrl) {
+  if (payload.imageUrl && payload.imageUrl !== null) {
     this.images.unshift({ url: payload.imageUrl });
+  } else {
+    console.warn(`Image data cleared for recipe ${this._id.toString()}`);
+    this.images = [];
   }
 
   await this.save();
