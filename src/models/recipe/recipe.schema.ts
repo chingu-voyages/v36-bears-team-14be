@@ -1,5 +1,8 @@
 import { Schema, model, SchemaOptions } from "mongoose";
-import { toggleLike } from "../../controllers/recipe/recipe.methods";
+import {
+  patchUpdate,
+  toggleLike,
+} from "../../controllers/recipe/recipe.methods";
 import {
   createNewRecipe,
   deleteRecipeById,
@@ -58,6 +61,8 @@ const RecipeSchema = new Schema<IRecipe>(
 );
 
 RecipeSchema.methods.toggleLike = toggleLike;
+RecipeSchema.methods.patchUpdate = patchUpdate;
+
 RecipeSchema.statics.createNewRecipe = createNewRecipe;
 RecipeSchema.statics.findAllRecipesLikedByUser = findAllRecipesLikedByUser;
 RecipeSchema.statics.findRecipesByContextLimitSkip =
