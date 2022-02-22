@@ -51,7 +51,7 @@ export async function getAllUsersSecure(): Promise<TSecureUser[]> {
   });
 }
 
-export async function patchUserByIdSecure({
+export async function patchUserProfileDetailsById({
   id,
   bio,
   favoriteFoods,
@@ -108,6 +108,36 @@ export async function patchUserByIdSecure({
     throw new Error("No data was updated in this operation");
   }
   return { user: adaptUserToSecure(user), profileDataUpdated };
+}
+
+export async function patchUserSecureDetailsById({
+  id,
+  updateType,
+  payload,
+}: {
+  id: string;
+  updateType: "password" | "name";
+  payload: { firstName: string; lastName: string } | { password: string };
+}): Promise<{ updateType: "name" | "password"; user: TSecureUser }> {
+  const user = await UserModel.findById(id);
+  if (!user) throw new Error(`User not found with id ${id}`);
+
+  if (updateType === "password") {
+    const dataPayload = payload as { password: string };
+    const hashedPassword = await hashPassword({
+      password: dataPayload.password,
+    });
+    user.hashedPassword = hashedPassword;
+    await user.save();
+    return { updateType, user: adaptUserToSecure(user) };
+  } else if (updateType === "name") {
+    const dataPayload = payload as { firstName: string; lastName: string };
+    user.firstName = dataPayload.firstName;
+    user.lastName = dataPayload.lastName;
+    await user.save();
+    return { updateType, user: adaptUserToSecure(user) };
+  }
+  throw new Error("patchUserSecureDetailsById: Invalid request");
 }
 /**
  *

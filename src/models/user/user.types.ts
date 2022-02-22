@@ -52,7 +52,7 @@ export interface IUserModel extends Model<IUserDocument> {
   }) => Promise<IUserDocument>;
   getUserByIdSecure: ({ id }: { id: string }) => Promise<TSecureUser>;
   getAllUsersSecure: () => Promise<TSecureUser[]>;
-  patchUserByIdSecure: ({
+  patchUserProfileDetailsById: ({
     id,
     bio,
     favoriteFoods,
@@ -63,4 +63,13 @@ export interface IUserModel extends Model<IUserDocument> {
     favoriteFoods?: Array<string>;
     photoUrl?: string;
   }) => Promise<TUserPatchReturnData>;
+  patchUserSecureDetailsById: ({
+    id,
+    updateType,
+    payload,
+  }: {
+    id: string;
+    updateType: "password" | "name";
+    payload: { firstName: string; lastName: string } | { password: string };
+  }) => Promise<{ updateType: "name" | "password"; user: TSecureUser }>;
 }

@@ -272,3 +272,56 @@ export const deleteRecipeByIdsValidator = (): any[] => {
       ),
   ];
 };
+
+export const secureUserPatchValidator = (): any => {
+  return [
+    checkSchema({
+      updateType: {
+        exists: true,
+        custom: {
+          options: (value) => {
+            if (value !== "name" && value !== "password") return false;
+            return true;
+          },
+          errorMessage: "This request doesn't have a valid updateType",
+        },
+      },
+      payload: {
+        exists: true,
+        errorMessage: "payload doesn't exist in this request",
+      },
+      "payload.firstName": {
+        optional: { options: { nullable: true } },
+        trim: true,
+        escape: true,
+        custom: {
+          options: (value, { req }) => {
+            if (req.body.updateType === "name" && !value) return false;
+            return true;
+          },
+        },
+      },
+      "payload.lastName": {
+        optional: { options: { nullable: true } },
+        trim: true,
+        escape: true,
+        custom: {
+          options: (value, { req }) => {
+            if (req.body.updateType === "name" && !value) return false;
+            return true;
+          },
+        },
+      },
+      "payload.password": {
+        optional: { options: { nullable: true } },
+        custom: {
+          options: (value, { req }) => {
+            if (req.body.updateType === "password" && !value) return false;
+            if (value.trim().length < 8) return false;
+            return true;
+          },
+        },
+      },
+    }),
+  ];
+};

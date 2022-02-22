@@ -1,6 +1,9 @@
 import * as express from "express";
 import { protectedRoute } from "../middleware/protected-route";
-import { patchUserByIdMe } from "./controllers/user/user.patch.controller";
+import {
+  patchUserProfileDetailsByIdMe,
+  patchUserProfileSecureDetails,
+} from "./controllers/user/user.patch.controller";
 import {
   getAllRecipesByUser,
   getUserById,
@@ -9,6 +12,7 @@ import {
 import {
   getParamIdValidator,
   patchUserValidator,
+  secureUserPatchValidator,
   validate,
 } from "./validators";
 import { validateAPIToken } from "../middleware/verify-api-token";
@@ -38,7 +42,17 @@ router.patch(
   getParamIdValidator(),
   patchUserValidator(),
   validate,
-  patchUserByIdMe
+  patchUserProfileDetailsByIdMe
+);
+
+router.patch(
+  "/:id/secure",
+  validateAPIToken,
+  protectedRoute,
+  getParamIdValidator(),
+  secureUserPatchValidator(),
+  validate,
+  patchUserProfileSecureDetails
 );
 
 export default router;
