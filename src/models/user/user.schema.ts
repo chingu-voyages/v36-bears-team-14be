@@ -4,7 +4,8 @@ import {
   findOneByEmail,
   getAllUsersSecure,
   getUserByIdSecure,
-  patchUserByIdSecure,
+  patchUserProfileDetailsById,
+  patchUserSecureDetailsById,
 } from "../../controllers/user/user.statics";
 import { IUser, IUserDocument, IUserModel } from "./user.types";
 
@@ -34,6 +35,7 @@ userSchema.statics.findOneByEmail = findOneByEmail;
 userSchema.statics.createUser = createUser;
 userSchema.statics.getUserByIdSecure = getUserByIdSecure;
 userSchema.statics.getAllUsersSecure = getAllUsersSecure;
-userSchema.statics.patchUserByIdSecure = patchUserByIdSecure;
+userSchema.statics.patchUserProfileDetailsById = patchUserProfileDetailsById;
+userSchema.statics.patchUserSecureDetailsById = patchUserSecureDetailsById;
 export default userSchema;
 export const UserModel = model<IUserDocument, IUserModel>("user", userSchema);
